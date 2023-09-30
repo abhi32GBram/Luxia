@@ -1,0 +1,164 @@
+
+
+datasource db {
+  provider     = "mysql"
+  url          = env("DATABASE_URL")
+  relationMode = "prisma"
+}
+
+generator client {
+  provider = "prisma-client-js"
+
+}
+
+model Course {
+  id String @id @default(uuid())
+  userId String
+  title String @db.Text
+  description String? @db.Text
+  imageUrl String? @db.Text
+  price Float?
+  isPublished Boolean @default(false)
+
+  categoryId String?
+  category Category? @relation(fields: [categoryId], references: [id])
+
+  
+  attachments Attachment[]
+  
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([categoryId])
+  
+}
+
+model Category {
+  id String @id @default(uuid())
+  name String @unique
+  courses Course[]
+}
+
+model Attachment {
+  id String @id @default(uuid())
+  name String
+  url String @db.Text
+
+  courseId String
+  course Course @relation(fields: [courseId], references: [id], onDelete: Cascade)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([courseId])
+}
+
+
+// datasource db {
+//   provider     = "mysql"
+//   url          = env("DATABASE_URL")
+//   relationMode = "prisma"
+// }
+
+// generator client {
+//   provider = "prisma-client-js"
+// }
+
+// model Course { 
+//     id String @id @default(uuid())
+//     userId String 
+
+//     title String @db.Text 
+//     description String? @db.Text
+//     imageURL String? @db.Text
+//     price Float?
+//     isPublished Boolean @default(false)
+
+//     categoryID String?
+//     category Category? @relation(fields: [categoryID], references: [id])
+
+//     attachments Attachments[]
+
+//     createdAt DateTime @default(now())
+//     updatedAt DateTime @updatedAt
+//   @@index([categoryID])
+// }
+
+// model Category {
+//   id String @id @default(uuid())
+
+//   name String @unique
+//   courses Course[]
+// }
+
+// model Attachments {
+//   id String @id @default(uuid())
+//   courseID String
+
+//   name String
+//   URL String @db.Text
+//   course Course @relation(fields: [courseID], references: [id], onDelete: Cascade)
+
+//   createdAt DateTime @default(now())
+//   updatedAt DateTime @updatedAt
+//   @@index([courseID])
+// }
+
+//THIS PIECE OF CODE HAS THE FOLLOWING ERROR 
+
+//  : Error validating field `category` in model `Course`: The relation field `category` on model `Course` is missing an opposite relation field on the model `Category`. Either run `prisma format` or add it manually.
+
+
+// datasource db {
+//   provider     = "mysql"
+//   url          = env("DATABASE_URL")
+//   relationMode = "prisma"
+// }
+
+// generator client {
+//   provider = "prisma-client-js"
+// }
+
+
+// model Course { 
+//     id String @id @default(uuid())
+//     userId String 
+
+//     title String @db.Text 
+//     description String? @db.Text
+//     imageURL String @db.Text
+//     price Float?
+//     isPublished Boolean @default(false)
+
+//     categoryID String?
+//     category Category? @relation(fields: [categoryID],references: [id]) // AT THIS LINE  
+
+//     attachments Attachments[]
+
+//     createdAt DateTime @default(now())
+//     updatedAt DateTime @updatedAt
+
+//   @@index([categoryID])
+
+// }
+
+// model Category {
+//   id String @id @default(uuid())
+//   name String @unique
+
+// }
+// model Attachments {
+//   id String @id @default(uuid())
+//   name String
+//   URL String @db.Text
+  
+
+//   courseID String
+//   course Course @relation(fields: [courseID],references: [id], onDelete: Cascade)
+
+//   createdAt DateTime @default(now())
+//   updatedAt DateTime @updatedAt
+
+//   @@index([courseID])
+// }
