@@ -26,7 +26,7 @@ export async function POST(req: Request) {
     }
 }
 
-// THIS ROUTE IS FINE BUT CAN HAVE
+// THIS ROUTE IS FINE BUT CAN HAVE ERROR ....ITS MENTIONED DOWN BELOW 
 // import { db } from "@/lib/db"
 // import { auth } from "@clerk/nextjs"
 // import { NextResponse } from "next/server"

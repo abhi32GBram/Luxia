@@ -13,27 +13,32 @@ import { Form, FormControl, FormField, FormItem, FormMessage } from "@/component
 
 import { Input } from '@/components/ui/input'
 import { Button } from '@/components/ui/button'
+
 import { Ghost, Pencil } from 'lucide-react'
+
 import toast from 'react-hot-toast'
 
+import { cn } from '@/lib/utils'
+import { Textarea } from '@/components/ui/textarea'
 
-interface TitleFormProps {
+import { Course } from '@prisma/client'
+
+
+interface DescriptionFormProps {
     
-    initialData: {
-        title: string,
-    },
+    initialData: Course
     courseId: string
 }
 
 const formSchema = z.object({
-    title: z.string().min(1, {
-        message: "Title is Required !! "
+    description: z.string().min(1, {
+        message: "Description is Required !! "
     })
 })
 
-const TitleForm = ({
+const DescriptionForm = ({
     initialData, courseId
-}: TitleFormProps) => {
+}: DescriptionFormProps) => {
 
     const  [isEditing, setisEditing] = useState(false)
 
@@ -45,7 +50,9 @@ const TitleForm = ({
 
     const form = useForm<z.infer<typeof formSchema>>({
         resolver: zodResolver(formSchema),
-        defaultValues: initialData
+        defaultValues: {
+            description : initialData?.description || ""
+        }
     })
 
     const { isSubmitting, isValid } = form.formState
@@ -63,7 +70,7 @@ const TitleForm = ({
 
         <div className='mt-6 border bg-slate-100 rounded-md p-4'>
             <div className='font-medium flex items-center justify-between'>
-                Course Title
+                Course Description 
                 <Button onClick={toggleEdit}variant="ghost">
                     {isEditing && (
                         <>Cancel</>
@@ -71,24 +78,27 @@ const TitleForm = ({
                     {!isEditing && (
                         <>
                             <Pencil className='h-4 w-4 mr-2' />
-                            Edit Title
+                            Edit Description
                         </>
                     )}
                     
                 </Button>
             </div>
             {!isEditing && (
-                <p className='text-sm mt-2'>
-                    {initialData.title}
+                <p className={cn(
+                    "text-sm mt-2",
+                    !initialData.description && "text-slate-500 italic "
+                )}>
+                    {initialData.description || "No Description"}
                 </p>
             )}
             {isEditing && (
                 <Form {...form}>
                     <form onSubmit={form.handleSubmit(onSubmit)} className='space-y-4 mt-4'>
-                        <FormField control={form.control} name='title' render={({field}) => (
+                        <FormField control={form.control} name='description' render={({field}) => (
                             <FormItem>
                                 <FormControl>
-                                    <Input disabled={isSubmitting} placeholder="'Eg, : 'Zero to Hero DevOps'" {...field}/>
+                                    <Textarea disabled={isSubmitting} placeholder="'Eg, : 'This Course will be About....'" {...field}/>
                                     
                                 </FormControl>
                                 <FormMessage />
@@ -106,6 +116,5 @@ const TitleForm = ({
     )
 }
 
-export default TitleForm
+export default DescriptionForm
 
-// http://localhost:3000/teacher/courses/4f9b3d1a-72e8-47a6-9dc5-a71b8295294b
