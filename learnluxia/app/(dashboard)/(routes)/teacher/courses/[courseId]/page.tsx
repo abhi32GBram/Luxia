@@ -123,4 +123,3 @@ const CourseID = async ({ params }: {
 }
 
 export default CourseID
-//35416
