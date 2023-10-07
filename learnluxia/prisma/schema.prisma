@@ -1,164 +1,155 @@
-
-
+// Define the data source configuration, specifying the database provider and URL.
 datasource db {
-  provider     = "mysql"
-  url          = env("DATABASE_URL")
-  relationMode = "prisma"
+  provider     = "mysql" // Database provider (MySQL)
+  url          = env("DATABASE_URL") // Database connection URL (from environment variable)
+  relationMode = "prisma" // Specify the Prisma relation mode
 }
 
+// Configure the generator for the Prisma client code.
 generator client {
-  provider = "prisma-client-js"
-
+  provider = "prisma-client-js" // Generate a Prisma client for JavaScript
 }
 
+// Define the 'Course' model representing a course entity.
 model Course {
-  id String @id @default(uuid())
-  userId String
-  title String @db.Text
-  description String? @db.Text
-  imageUrl String? @db.Text
-  price Float?
-  isPublished Boolean @default(false)
+  id          String  @id @default(uuid()) // Unique identifier for a course (UUID)
+  userId      String // User ID associated with the course
+  title       String  @db.Text // Course title as a text field in the database
+  description String? @db.Text // Optional course description as text
+  imageUrl    String? @db.Text // Optional image URL for the course
+  price       Float? // Optional course price
+  isPublished Boolean @default(false) // Default to not published
 
-  categoryId String?
+  categoryId String? // Optional category ID associated with the course
+
   category Category? @relation(fields: [categoryId], references: [id])
+  // Define a relationship with the 'Category' model where 'category' refers to a category associated with this course.
+  // The 'categoryId' field in this table is related to the 'id' field in the 'Category' table.
+  // The '?' indicates that this relationship is optional, as a course may or may not belong to a category.
 
-  
-  attachments Attachment[]
-  
+  chapters    Chapter[] // List of chapters associated with the course
+  attachments Attachment[] // List of attachments associated with the course
 
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  purchases Purchase[] // List of purchases associated with the course
 
-  @@index([categoryId])
-  
+  createdAt DateTime @default(now()) // Timestamp for when the course was created
+  updatedAt DateTime @updatedAt // Timestamp for when the course was last updated
+
+  @@index([categoryId]) // Index on the 'categoryId' field for optimization
 }
 
+// Define the 'Category' model representing a category entity.
 model Category {
-  id String @id @default(uuid())
-  name String @unique
-  courses Course[]
+  id      String   @id @default(uuid()) // Unique identifier for a category (UUID)
+  name    String   @unique // Category name, unique constraint
+  courses Course[] // List of courses in this category
 }
 
+// Define the 'Attachment' model representing an attachment entity.
 model Attachment {
-  id String @id @default(uuid())
-  name String
-  url String @db.Text
+  id   String @id @default(uuid()) // Unique identifier for an attachment (UUID)
+  name String // Attachment name
+  url  String @db.Text // URL of the attachment
 
-  courseId String
+  courseId String // ID of the course to which this attachment belongs
+
   course Course @relation(fields: [courseId], references: [id], onDelete: Cascade)
+  // Establish a relationship with the 'Course' model, where 'course' represents the course associated with this attachment.
+  // The 'courseId' field in this table is linked to the 'id' field in the 'Course' table.
+  // 'onDelete: Cascade' specifies that when a course is deleted, its related attachments should also be deleted.
 
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  createdAt DateTime @default(now()) // Timestamp for when the attachment was created
+  updatedAt DateTime @updatedAt // Timestamp for when the attachment was last updated
 
-  @@index([courseId])
+  @@index([courseId]) // Index on the 'courseId' field for optimization
 }
 
+// Define the 'Chapter' model representing a chapter within a course.
+model Chapter {
+  id          String  @id @default(uuid()) // Unique identifier for a chapter (UUID)
+  title       String // Chapter title
+  description String? @db.Text // Optional chapter description as text
+  videoUrl    String? @db.Text // Optional video URL for the chapter
+  position    Int // Position of the chapter
+  isPublished Boolean @default(false) // Default to not published
+  isFree      Boolean @default(false) // Default to not free
 
-// datasource db {
-//   provider     = "mysql"
-//   url          = env("DATABASE_URL")
-//   relationMode = "prisma"
-// }
+  muxData MuxData? // Multimedia data associated with the chapter
 
-// generator client {
-//   provider = "prisma-client-js"
-// }
+  courseId String // ID of the course to which this chapter belongs
 
-// model Course { 
-//     id String @id @default(uuid())
-//     userId String 
+  course Course @relation(fields: [courseId], references: [id], onDelete: Cascade)
+  // Establish a relationship with the 'Course' model, where 'course' represents the course associated with this chapter.
+  // The 'courseId' field in this table is linked to the 'id' field in the 'Course' table.
+  // 'onDelete: Cascade' specifies that when a course is deleted, its related chapters should also be deleted.
 
-//     title String @db.Text 
-//     description String? @db.Text
-//     imageURL String? @db.Text
-//     price Float?
-//     isPublished Boolean @default(false)
+  userProgress UserProgress[] // User progress records associated with the chapter
 
-//     categoryID String?
-//     category Category? @relation(fields: [categoryID], references: [id])
+  createdAt DateTime @default(now()) // Timestamp for when the chapter was created
+  updatedAt DateTime @updatedAt // Timestamp for when the chapter was last updated
 
-//     attachments Attachments[]
+  @@index([courseId]) // Index on the 'courseId' field for optimization
+}
 
-//     createdAt DateTime @default(now())
-//     updatedAt DateTime @updatedAt
-//   @@index([categoryID])
-// }
+// Define the 'MuxData' model representing multimedia data associated with chapters.
+model MuxData {
+  id         String @id @default(uuid()) // Unique identifier for multimedia data (UUID)
+  assetId    String // Asset ID
+  playbackId String // Playback ID
 
-// model Category {
-//   id String @id @default(uuid())
+  chapterId String @unique // Unique identifier for the chapter associated with this data
 
-//   name String @unique
-//   courses Course[]
-// }
+  chapter Chapter @relation(fields: [chapterId], references: [id], onDelete: Cascade)
+  // Establish a relationship with the 'Chapter' model, where 'chapter' represents a chapter associated with this multimedia data.
+  // The 'chapterId' field in this table is linked to the 'id' field in the 'Chapter' table.
+  // 'onDelete: Cascade' specifies that when a chapter is deleted, its related multimedia data should also be deleted.
+}
 
-// model Attachments {
-//   id String @id @default(uuid())
-//   courseID String
+// Define the 'UserProgress' model representing user progress within chapters.
+model UserProgress {
+  id     String @id @default(uuid()) // Unique identifier for user progress (UUID)
+  userId String // User ID associated with the progress
 
-//   name String
-//   URL String @db.Text
-//   course Course @relation(fields: [courseID], references: [id], onDelete: Cascade)
+  chapterId String // ID of the chapter for which progress is recorded
+  chapter   Chapter @relation(fields: [chapterId], references: [id], onDelete: Cascade)
+  // Establish a relationship with the 'Chapter' model, where 'chapter' represents a chapter associated with this user progress record.
+  // The 'chapterId' field in this table is linked to the 'id' field in the 'Chapter' table.
+  // 'onDelete: Cascade' specifies that when a chapter is deleted, its related user progress records should also be deleted.
 
-//   createdAt DateTime @default(now())
-//   updatedAt DateTime @updatedAt
-//   @@index([courseID])
-// }
+  isCompleted Boolean @default(false) // Default to not completed
 
-//THIS PIECE OF CODE HAS THE FOLLOWING ERROR 
+  createdAt DateTime @default(now()) // Timestamp for when the progress record was created
+  updatedAt DateTime @updatedAt // Timestamp for when the progress record was last updated
 
-//  : Error validating field `category` in model `Course`: The relation field `category` on model `Course` is missing an opposite relation field on the model `Category`. Either run `prisma format` or add it manually.
+  @@unique([userId, chapterId]) // Unique constraint on the combination of 'userId' and 'chapterId'
+  @@index([chapterId]) // Index on the 'chapterId' field for optimization
+}
 
+// Define the 'Purchase' model representing a purchase made by a user for a course.
+model Purchase {
+  id       String @id @default(uuid()) // Unique identifier for a purchase (UUID)
+  userId   String // User ID who made the purchase
+  courseId String // ID of the course that was purchased
 
-// datasource db {
-//   provider     = "mysql"
-//   url          = env("DATABASE_URL")
-//   relationMode = "prisma"
-// }
+  course Course @relation(fields: [courseId], references: [id], onDelete: Cascade)
+  // Establish a relationship with the 'Course' model, where 'course' represents the course associated with this chapter.
+  // The 'courseId' field in this table is linked to the 'id' field in the 'Course' table.
+  // 'onDelete: Cascade' specifies that when a course is deleted, its related chapters should also be deleted.
 
-// generator client {
-//   provider = "prisma-client-js"
-// }
+  createdAt DateTime @default(now()) // Timestamp for when the purchase was created
+  updatedAt DateTime @updatedAt // Timestamp for when the purchase was last updated
 
+  @@index([courseId]) // Index on the 'courseId' field for optimization
+}
 
-// model Course { 
-//     id String @id @default(uuid())
-//     userId String 
+// Define the 'StripeCustomer' model representing Stripe customer data.
+model StripeCustomer {
+  id               String @default(uuid()) // Unique identifier for a Stripe customer (UUID)
+  userId           String @unique // User ID associated with the Stripe customer
+  stripeCustomerId String @unique // Unique identifier for the Stripe customer
 
-//     title String @db.Text 
-//     description String? @db.Text
-//     imageURL String @db.Text
-//     price Float?
-//     isPublished Boolean @default(false)
+  createdAt DateTime @default(now()) // Timestamp for when the Stripe customer data was created
+  updatedAt DateTime @updatedAt // Timestamp for when the Stripe customer data was last updated
+}
 
-//     categoryID String?
-//     category Category? @relation(fields: [categoryID],references: [id]) // AT THIS LINE  
-
-//     attachments Attachments[]
-
-//     createdAt DateTime @default(now())
-//     updatedAt DateTime @updatedAt
-
-//   @@index([categoryID])
-
-// }
-
-// model Category {
-//   id String @id @default(uuid())
-//   name String @unique
-
-// }
-// model Attachments {
-//   id String @id @default(uuid())
-//   name String
-//   URL String @db.Text
-  
-
-//   courseID String
-//   course Course @relation(fields: [courseID],references: [id], onDelete: Cascade)
-
-//   createdAt DateTime @default(now())
-//   updatedAt DateTime @updatedAt
-
-//   @@index([courseID])
-// }
+// Check the commit before this for the previously designed schema's 
