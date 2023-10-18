@@ -17,10 +17,6 @@ import PriceForm from './_components/price-form'
 import AttachmentForm from './_components/attachment-form'
 import ChaptersForm from './_components/chapters-form'
 
-
-
-
-
 const CourseID = async ({ params }: {
     params: { courseId: string }
 }) => {
@@ -67,6 +63,7 @@ const CourseID = async ({ params }: {
         course.price,
         course.categoryId,
         course.chapters.some(chapter => chapter.isPublished),
+        
     ]
 
     const totalFields = requiredFields.length
@@ -86,7 +83,7 @@ const CourseID = async ({ params }: {
                     <div className='flex items-center gap-x-2'>
                         <IconBadge icon={LayoutDashboard} />
                         <h2 className='text-xl font-medium'>
-                            Customize you're Course
+                            Customize your Course
                         </h2 >
                     </div>
                     <TitleForm initialData={course} courseId={course.id} />
@@ -112,7 +109,7 @@ const CourseID = async ({ params }: {
                         <div className='flex items-center gap-x-2'>
                             <IconBadge icon={CircleDollarSign} />
                             <h2 className='text-xl font-medium'>
-                                Sell you're Course
+                                Sell your Course
                             </h2>
                         </div>
                         <PriceForm initialData={course} courseId={course.id} />
@@ -121,7 +118,7 @@ const CourseID = async ({ params }: {
                         <div className='flex items-center gap-x-2'>
                             <IconBadge icon={File} />
                             <h2 className='text-xl font-medium'>
-                                Resources & Attachments
+                                Resources & Attachments (Optional)
                             </h2>
                         </div>
                         <AttachmentForm initialData={course} courseId={course.id} />

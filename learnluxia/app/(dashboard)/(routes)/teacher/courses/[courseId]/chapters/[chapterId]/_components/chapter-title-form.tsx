@@ -13,31 +13,26 @@ import { Form, FormControl, FormField, FormItem, FormMessage } from "@/component
 
 import { Input } from '@/components/ui/input'
 import { Button } from '@/components/ui/button'
-
 import { Ghost, Pencil } from 'lucide-react'
-
 import toast from 'react-hot-toast'
 
-import { cn } from '@/lib/utils'
 
-
-import { Course } from '@prisma/client'
-import { PriceFormat } from '@/lib/format'
-
-
-interface PriceFormProps {
+interface ChapterTitleFormProps {
     
-    initialData: Course
+    initialData: {
+        title: string,
+    },
     courseId: string
+    chapterId : string 
 }
 
 const formSchema = z.object({
-    price : z.coerce.number()
+    title: z.string().min(1)
 })
 
-const PriceForm = ({
-    initialData, courseId
-}: PriceFormProps) => {
+const ChapterTitleForm = ({
+    initialData, courseId,chapterId
+}: ChapterTitleFormProps) => {
 
     const  [isEditing, setisEditing] = useState(false)
 
@@ -49,16 +44,14 @@ const PriceForm = ({
 
     const form = useForm<z.infer<typeof formSchema>>({
         resolver: zodResolver(formSchema),
-        defaultValues: {
-            price : initialData?.price || undefined
-        }
+        defaultValues: initialData
     })
 
     const { isSubmitting, isValid } = form.formState
     const onSubmit = async (values: z.infer<typeof formSchema>) => {
         try {
-            await axios.patch(`/api/courses/${courseId}`,values)
-            toast.success("Course Update Successfully ")
+            await axios.patch(`/api/courses/${courseId}/chapters/${chapterId}`,values)
+            toast.success("Chapter Update Successfully ")
             toggleEdit()
             router.refresh()
         } catch  {
@@ -69,7 +62,7 @@ const PriceForm = ({
 
         <div className='mt-6 border bg-slate-100 rounded-md p-4'>
             <div className='font-medium flex items-center justify-between'>
-                Course Price 
+                Chapter Title
                 <Button onClick={toggleEdit}variant="ghost">
                     {isEditing && (
                         <>Cancel</>
@@ -77,27 +70,24 @@ const PriceForm = ({
                     {!isEditing && (
                         <>
                             <Pencil className='h-4 w-4 mr-2' />
-                            Edit Price
+                            Edit Title
                         </>
                     )}
                     
                 </Button>
             </div>
             {!isEditing && (
-                <p className={cn(
-                    "text-sm mt-2",
-                    !initialData.price && "text-slate-500 italic "
-                )}>
-                    {initialData.price  ? PriceFormat(initialData.price) : "No Price Assigned "}
+                <p className='text-sm mt-2'>
+                    {initialData.title}
                 </p>
             )}
             {isEditing && (
                 <Form {...form}>
                     <form onSubmit={form.handleSubmit(onSubmit)} className='space-y-4 mt-4'>
-                        <FormField control={form.control} name='price' render={({field}) => (
+                        <FormField control={form.control} name='title' render={({field}) => (
                             <FormItem>
                                 <FormControl>
-                                    <Input type='number' step="0.01" disabled={isSubmitting} placeholder="'Eg, : 'Set a Price for your Course '" {...field}/>
+                                    <Input disabled={isSubmitting} placeholder="'Eg, : 'Welcome to the Course '" {...field}/>
                                     
                                 </FormControl>
                                 <FormMessage />
@@ -115,5 +105,6 @@ const PriceForm = ({
     )
 }
 
-export default PriceForm
+export default ChapterTitleForm
 
+// http://localhost:3000/teacher/courses/4f9b3d1a-72e8-47a6-9dc5-a71b8295294b
