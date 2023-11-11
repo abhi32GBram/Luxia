@@ -34,6 +34,8 @@ export async function PATCH(
         })
 
         // TO DO : HANDLE THE VIDEO UPLOAD THING 
+
+        
         return NextResponse.json(chapter)
     } catch (error) {
         console.log("[COURSES_CHAPTER_ID]", error)

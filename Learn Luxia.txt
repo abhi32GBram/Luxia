@@ -1,0 +1,490 @@
+getting this error : Error validating field `category` in model `Course`: The relation field `category` on model `Course` is missing an opposite relation field on the model `Category`. Either run `prisma format` or add it manually.
+for this schema : 
+datasource db {
+  provider     = "mysql"
+  url          = env("DATABASE_URL")
+  relationMode = "prisma"
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+
+model Course { 
+    id String @id @default(uuid())
+    userId String 
+
+    title String @db.Text 
+    description String? @db.Text
+    imageURL String @db.Text
+    price Float?
+    isPublished Boolean @default(false)
+
+    categoryID String?
+    category Category? @relation(fields: [categoryID],references: [id])
+
+    attachments Attachments[]
+
+    createdAt DateTime @default(now())
+    updatedAt DateTime @updatedAt
+
+  @@index([categoryID])
+
+}
+
+model Category {
+  id String @id @default(uuid())
+  name String @unique
+
+}
+model Attachments {
+  id String @id @default(uuid())
+  name String
+  URL String @db.Text
+  
+
+  courseID String
+  course Course @relation(fields: [courseID],references: [id], onDelete: Cascade)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([courseID])
+}
+
+
+--------------------------------------------------
+
+
+getting this error : Type '{ userId: string; title: any; }' is not assignable to type '(Without<CourseCreateInput, CourseUncheckedCreateInput> & CourseUncheckedCreateInput) | (Without<...> & CourseCreateInput)'.
+  Type '{ userId: string; title: any; }' is not assignable to type 'Without<CourseUncheckedCreateInput, CourseCreateInput> & CourseCreateInput'.
+    Property 'imageURL' is missing in type '{ userId: string; title: any; }' but required in type 'CourseCreateInput'.ts(2322)
+index.d.ts(4281, 5): 'imageURL' is declared here.
+index.d.ts(1981, 5): The expected type comes from property 'data' which is declared here on type '{ select?: CourseSelect<DefaultArgs> | null | undefined; include?: CourseInclude<DefaultArgs> | null | undefined; data: (Without<...> & CourseUncheckedCreateInput) | (Without<...> & CourseCreateInput); }'
+(property) data: (Prisma.Without<Prisma.CourseCreateInput, Prisma.CourseUncheckedCreateInput> & Prisma.CourseUncheckedCreateInput) | (Prisma.Without<Prisma.CourseUncheckedCreateInput, Prisma.CourseCreateInput> & Prisma.CourseCreateInput)
+The data needed to create a Course.
+
+for this schema : 
+
+datasource db {
+  provider     = "mysql"
+  url          = env("DATABASE_URL")
+  relationMode = "prisma"
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+model Course { 
+    id String @id @default(uuid())
+    userId String 
+    title String @db.Text 
+    description String? @db.Text
+    imageURL String @db.Text
+    price Float?
+    isPublished Boolean @default(false)
+    categoryID String?
+    category Category? @relation(fields: [categoryID], references: [id])
+    attachments Attachments[]
+    createdAt DateTime @default(now())
+    updatedAt DateTime @updatedAt
+  @@index([categoryID])
+}
+
+model Category {
+  id String @id @default(uuid())
+  name String @unique
+  courses Course[]
+}
+
+model Attachments {
+  id String @id @default(uuid())
+  name String
+  URL String @db.Text
+  courseID String
+  course Course @relation(fields: [courseID], references: [id], onDelete: Cascade)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  @@index([courseID])
+}
+
+in the following code : 
+
+
+
+import { db } from "@/lib/db"
+import { auth } from "@clerk/nextjs"
+import { NextResponse } from "next/server"
+
+export async function POST(
+    req:Request,)
+    {
+        try {
+            const {userId}  = auth() 
+            const {title } = await req.json()
+
+            if(!userId){
+                return new NextResponse("Unauthorized !! ",{status : 401 })
+            }
+
+            const course = await db.course.create({
+                data:{
+                    userId,
+                    title
+                }
+            })
+            
+
+
+        } catch (error) {
+            console.log("[COURSES API]",error)
+            return new NextResponse("Internal Error Occured ",{status: 500})
+        }
+    }
+}
+
+-=-==-=-2=-32=-32=32-3=2-
+
+getting this error : 
+
+Type '{ id: string; userId: string; title: string; description: string | null; imageUrl: string | null; price: number | null; isPublished: boolean; categoryId: string | null; createdAt: Date; updatedAt: Date; }' is not assignable to type '{ description: string; }'.
+  Types of property 'description' are incompatible.
+    Type 'string | null' is not assignable to type 'string'.
+      Type 'null' is not assignable to type 'string'.ts(2322)
+description-form.tsx(24, 5): The expected type comes from property 'initialData' which is declared here on type 'IntrinsicAttributes & DescriptionFormProps'
+(property) DescriptionFormProps.initialData: {
+    description: string;
+	
+	for this code : 
+	
+	import React from 'react'
+
+import { db } from '@/lib/db'
+import { auth } from '@clerk/nextjs'
+
+import { redirect } from 'next/navigation'
+
+import { IconBadge } from '@/components/icon-badge'
+import { LayoutDashboard } from 'lucide-react'
+import TitleForm from './_components/title-form'
+import DescriptionForm from './_components/description-form'
+
+
+const CourseID = async ({ params }: {
+    params: { courseId: string }
+}) => {
+    const { userId } = auth()
+
+    if (!userId) {
+        return redirect("/")
+    }
+    const course = await db.course.findUnique({
+        where: {
+            id: params.courseId
+
+        }
+    })
+    if (!course) {
+        return redirect("/")
+    }
+
+    const requiredFields = [
+        course.title,
+        course.description,
+        course.imageUrl,
+        course.price,
+        course.categoryId
+    ]
+
+    const totalFields = requiredFields.length
+    const completedFields = requiredFields.filter(Boolean).length
+
+    const completionText = `(${completedFields}/${totalFields})`
+    return (
+        <div className='p-6'>
+            <div className='flex items-center justify-between'>
+                <div className='flex flex-col gap-y-2'>
+                    <h1 className='text-2xl font-semibold'>Setting Up the Course</h1>
+                    <span className='text-sm text-slate-600'>Complete all the Fields {completionText}</span>
+                </div>
+            </div>
+            <div className='grid grid-cols-1 md:grid-cols-2 gap-6 mt-16'>
+                <div>
+                    <div className='flex items-center gap-x-2'>
+                        <IconBadge icon={LayoutDashboard} />
+                        <h2 className='text-xl'>
+                            Customize you're Course
+                        </h2 >
+                    </div>
+                    <TitleForm initialData = {course} courseId={course.id}/>
+                    <DescriptionForm initialData = {course} courseId={course.id}/>
+                </div>
+            </div>
+        </div>
+    )
+}
+
+export default CourseID
+
+also getting this error at times in the terminal :  error node_modules\@clerk\nextjs\dist\esm\server\getAuth.js (28:12) @ eval
+- error Error: Clerk: auth() was called but it looks like you aren't using `authMiddleware` in your middleware file. Please use `authMiddleware` and make sure your middleware matcher is configured correctly and it matches this route or page. See https://clerk.com/docs/quickstarts/get-started-with-nextjs
+    at CourseID (teacher/courses/[courseId]/page.tsx:26:75)
+    at async Promise.all (index 0)
+    at async Promise.all (index 0)
+    at async Promise.all (index 0)
+    at async Promise.all (index 0)
+    at async Promise.all (index 0)
+    at async Promise.all (index 0)
+null
+- error node_modules\@clerk\nextjs\dist\esm\server\getAuth.js (28:12) @ eval
+- error Error: Clerk: auth() was called but it looks like you aren't using `authMiddleware` in your middleware file. Please use `authMiddleware` and make sure your middleware matcher is configured correctly and it matches this route or page. See https://clerk.com/docs/quickstarts/get-started-with-nextjs
+    at CourseID (teacher/courses/[courseId]/page.tsx:26:75)
+    at async Promise.all (index 0)
+    at async Promise.all (index 0)
+    at async Promise.all (index 0)
+    at async Promise.all (index 0)
+    at async Promise.all (index 0)
+    at async Promise.all (index 0)
+digest: "1999630823"
+null
+
+-------------------------------------------------------------------------------------------------------
+
+title apparently isnt being used even after declaration hence im getting an internal error of 505 for this code when creating a new chapter :
+// Import necessary modules and dependencies
+import { db } from "@/lib/db"; // Database-related module
+import { auth } from "@clerk/nextjs"; // User authentication module
+import { NextResponse } from "next/server"; // HTTP response module
+
+// Define an asynchronous function to handle HTTP POST requests
+export async function POST(
+    req: Request, // HTTP request object
+    { params }: { params: { courseId: string } } // Destructured 'params' object containing 'courseId' parameter
+) {
+    try {
+        // Authenticate the user and extract their 'userId'
+        const { userId } = auth();
+        const {title} = await req.json()  
+
+        // Check if the user is authenticated, if not, return an "Unauthorized" response with status code 401
+        if (!userId) {
+            return new NextResponse("Unauthorized", { status: 401 });
+        }
+
+        // Check if the user is the owner of the specified course ('courseId')
+        const courseOwner = await db.course.findUnique({
+            where: {
+                id: params.courseId,
+                userId: userId,
+            },
+        });
+
+        // If the user is not the owner, return an "Unauthorized" response with status code 401
+        if (!courseOwner) {
+            return new NextResponse("Unauthorized", { status: 401 });
+        }
+
+        // Find the last chapter of the course to determine the position of the new chapter
+        const lastChapter = await db.chapter.findFirst({
+            where: {
+                courseId: params.courseId,
+            },
+            orderBy: {
+                position: "desc",
+            },
+        });
+
+        // Calculate the position of the new chapter; set it to one more than the last chapter's position (or 1 if no chapters exist)
+        const newPosition = lastChapter ? lastChapter.position + 1 : 1;
+
+        // Create a new chapter in the database with the specified 'title', 'courseId', and 'position'
+        const chapter = await db.chapter.create({
+            data: {
+                title: await req.json(), // Extract 'title' from the HTTP request body
+                courseId: params.courseId, // 'courseId' from the URL parameters
+                position: newPosition, // Calculated position
+            },
+        });
+
+        // Return a JSON response containing the newly created chapter
+        return NextResponse.json(chapter);
+    } catch (error) {
+        // If an error occurs during the process, log the error and return an "Internal Error Occurred" response with status code 500
+        console.log("CHAPTERS", error);
+        return new NextResponse("Internal Error Occurred", { status: 500 });
+    }
+}
+
+34034043940930493049309403940394039403940394039094309304930
+
+getting the following error :
+Type 'SignedInAuthObject | SignedOutAuthObject' is not assignable to type 'string | StringFilter<"Course"> | undefined'.
+  Type 'SignedInAuthObject' is not assignable to type 'string | StringFilter<"Course"> | undefined'.ts(2322)
+index.d.ts(9385, 5): The expected type comes from property 'userId' which is declared here on type 'CourseWhereUniqueInput'
+(property) userId: SignedInAuthObject | SignedOutAuthObject
+
+for this code :
+import { db } from "@/lib/db"
+import { auth } from "@clerk/nextjs"
+import { NextResponse } from "next/server"
+
+
+export async function PUT(
+    req:Request,
+    {params} : {params : {courseId : string  }}
+
+) {
+    try {
+        const userId = auth()
+        if(!userId){
+            return new NextResponse("Unauthorized Access ",{status:401})
+        }
+    const {list}  = await req.json()
+
+    const courseOwner = await db.course.findUnique({
+        where :{
+            id :  params.courseId,
+            userId : userId
+        }
+    })
+
+    if(!courseOwner){
+        return new NextResponse("Unauthorized Access ",{status:401})
+    }
+
+    for(let item of list ){
+        db.chapter.update({
+            where :{id: item.id},
+            data : { position :item.position}
+
+        })
+    }
+    return new NextResponse("Chapters Reordered Successfully",{status:200})
+    } catch (error) {
+        console.log("REORDER",error)
+        return new NextResponse("Internal Server Occured",{status:500})
+
+
+
+    }
+}
+
+
+
+eeefefefefefefefeefehfefjhjehjfhejhfejfhefhejhfejfhejfh
+
+
+(1*1)/(1+1) + (1*2)/(1+2) +  (1*2*3)/(1+2+3) + .... 
+
+S = 1 * (1*2) + (1*2*3) + ... + n
+
+public class SumOfSeries 
+{
+    public static void main(String[] args) 
+	{
+
+        // Declare and initialize the number of terms in the series
+        int n = 5;
+
+        // Declare and initialize the sum variable
+        double sum = 0.0;
+
+        // Start a for loop to iterate from 1 to n (ithe we have taken 5)
+        for (int i = 1; i <= n; i++) 
+		{
+
+            // Calculate the value of the current term in the series
+            double term = (i * (i + 1)) / (i + 2);
+
+            // Add the value of the current term to the sum variable
+            sum += term;
+        }
+
+        // Print the sum of the series to the console - 
+        System.out.println("The sum of the series is: " + sum);
+    }
+}
+dkfjdkjfdkdkdjfdfkfjdkjfkdjdkfjdkfjdkjfdkdjdkjfkdjfdkjfdkfjdkfjdkfjdfjdkfdjfkd
+
+getting this error : 
+error No HTTP methods exported in 'D:\My_Programs\VS-Code\Projects\LMS_facsimile\learnluxia\app\api\courses\[courseId]\chapters\[chapterId]\route.ts'. Export a named export for each HTTP method.
+
+for the following code: 
+import { db } from "@/lib/db";
+import { auth } from "@clerk/nextjs";
+import { NextResponse } from "next/server";
+
+export async function PATH(
+    req: Request,
+    { params }: { params: { courseId: string; chapterId: string } }
+) {
+    try {
+        const { userId } = auth()
+        const { isPublished, ...values } = await req.json()
+
+        if (!userId) {
+            return new NextResponse("Unauthorized Access", { status: 401 })
+        }
+        const courseOwner = await db.course.findUnique({
+            where: {
+                id: params.courseId,
+                userId
+            }
+        })
+
+        if (!courseOwner) {
+            return new NextResponse("Unauthorized Access", { status: 401 })
+        }
+        const chapter = await db.chapter.update({
+            where: {
+                id: params.chapterId,
+                courseId: params.courseId
+            },
+            data: {
+                ...values
+            }
+        })
+
+        // TO DO : HANDLE THE VIDEO UPLOAD THING 
+        return NextResponse.json(chapter)
+    } catch (error) {
+        console.log("[COURSES_CHAPTER_ID]", error)
+        return new NextResponse("Internal Error Occured ", { status: 500 })
+    }
+}
+
+
+
+**Hindi**
+
+सर्दियों की शाम में जब आसमान होता है गुलाबी,
+तो ऐसा लगता है जैसे कोई छिड़क रहा हो जादू की लाली।
+
+सूरज ढलता है पश्चिम में,
+और आसमान बन जाता है रंगीन।
+
+गुलाबी, नारंगी, और पीला,
+सब रंग मिलते हैं एक साथ,
+बनाते हैं एक सुंदर कलाकृति।
+
+सर्दियों की शाम का गुलाबी आसमान,
+है एक ऐसा नजारा,
+जो देखकर दिल हो जाता है खुश।
+
+**Urdu**
+
+جب سرمائی شام میں آسمان ہوتا ہے گلابی،
+تو ایسا لگتا ہے جیسے کوئی چھڑک رہا ہو جادو کی لالی۔
+
+سورج ڈھلتا ہے مغرب میں،
+اور آسمان بن جاتا ہے رنگین۔
+
+گلابی، نارنجی، اور پیلا،
+سب رنگ مل جاتے ہیں ایک ساتھ،
+ب بناتے ہیں ایک خوبصورت فن پارہ۔
+
+سرمائی شام کا گلابی آسمان،
+ہے ایک ایسا منظر،
+جسے دیکھ کر دل ہو جاتا ہے خوش۔
