@@ -14,6 +14,9 @@ import ChapterTitleForm from './_components/chapter-title-form';
 import ChapterDescriptionForm from './_components/chapter-description-form';
 import ChapterAccessForm from './_components/chapter-access-form';
 import ChapterVideoForm from './_components/chapter-video-form';
+import Banner from '@/components/banner';
+import ChapterActions from './_components/chapter-actions';
+
 
 // Define an asynchronous function for the Chapter page, receiving parameters.
 const ChapterIdPage = async ({
@@ -57,61 +60,72 @@ const ChapterIdPage = async ({
   // Generate a completion text to display the progress.
   const completetionText = `(${completedFields}/${totalFields})`;
 
+  // Making sure that all of the field in requiredFields is True
+  const isComplete = requiredFields.every(Boolean)
+
   return (
-    <div className='p-6'>
-      <div className='flex items-center justify-between'>
-        <div className='w-full'>
-          {/* Create a link to go back to the course setup page. */}
-          <Link href={`/teacher/courses/${params.courseId}`} className=' flex items-center text-sm hover:opacity-75 transition mb-8'>
-            <ArrowLeft className='h-4 w-4 mr-2' />
-            Back to Course Setup
-          </Link>
-          <div className='flex items-center justify-center w-full'>
+    // Wrapped the entire render with a check for if the Chapter is Published, then show a warning that it isn't yet
+    <>
+      {!chapter.isPublished && (
+        <Banner variant='warning' label='This Chapter is Unpublished & will not be visible in the Course' />
+      )}
+      <div className='p-6'>
+        <div className='flex items-center justify-between mb-8'>
+          <div>
+            <Link href={`/teacher/courses/${params.courseId}`} className='flex items-center text-sm hover:opacity-75 transition'>
+              <ArrowLeft className='h-4 w-4 mr-2' />
+              Back to Course Setup
+            </Link>
             <div className='flex flex-col gap-y-2'>
-              <h1 className='text-2xl font-semibold'>Chapter Creation </h1>
+              <h1 className='text-2xl font-semibold'>
+                Chapter Creation
+              </h1>
               <span className='text-sm text-slate-700'>
                 {/* Display the completion text for fields. */}
                 Complete all the Fields {completetionText}
               </span>
             </div>
           </div>
-        </div>
-      </div>
-      <div className='grid grid-cols-1 md:grid-cols-2 gap-6 mt-16'>
-        <div className='space-y-4'>
           <div>
-            <div className='flex items-center gap-x-2 '>
-              {/* Display an icon and title for chapter customization. */}
-              <IconBadge icon={LayoutDashboard} />
+            <ChapterActions disabled={!isComplete} courseId={params.courseId} chapterId={params.chapterId} isPublished={chapter.isPublished} />
+          </div>
+        </div>
+        <div className='grid grid-cols-1 md:grid-cols-2 gap-6 mt-16'>
+          <div className='space-y-4'>
+            <div>
+              <div className='flex items-center gap-x-2 '>
+                <IconBadge icon={LayoutDashboard} />
+                <h2 className='text-xl'>
+                  Customize your Chapter
+                </h2>
+              </div>
+              <ChapterTitleForm initialData={chapter} courseId={params.courseId} chapterId={params.chapterId} />
+              <ChapterDescriptionForm initialData={chapter} courseId={params.courseId} chapterId={params.chapterId} />
+            </div>
+            <div className='flex items-center gap-x-2'>
+              <IconBadge icon={Eye} />
               <h2 className='text-xl'>
-                Customize your Chapter
+                Access Chapter Settings
               </h2>
             </div>
-            {/* Render the chapter title and description forms for editing. */}
-            <ChapterTitleForm initialData={chapter} courseId={params.courseId} chapterId={params.chapterId} />
-            <ChapterDescriptionForm initialData={chapter} courseId={params.courseId} chapterId={params.chapterId} />
+            <ChapterAccessForm initialData={chapter} courseId={params.courseId} chapterId={params.chapterId} />
           </div>
-          <div className='flex items-center gap-x-2'>
-            <IconBadge icon={Eye} />
-            <h2 className='text-xl'>
-              Access Chapter Settings
-            </h2>
+          <div>
+            <div className='flex items-center gap-x-2'>
+              <IconBadge icon={Video} />
+              <h2 className='text-xl'>
+                Add your Video
+              </h2>
+            </div>
+            <ChapterVideoForm initialData={chapter} courseId={params.courseId} chapterId={params.chapterId} />
           </div>
-          <ChapterAccessForm initialData={chapter} courseId={params.courseId} chapterId={params.chapterId} />
-        </div>
-        <div>
-          <div className='flex items-center gap-x-2'>
-            <IconBadge icon={Video} />
-            <h2 className='text-xl'>
-              Add your Video
-            </h2>
-          </div>
-          <ChapterVideoForm initialData={chapter} courseId={params.courseId} chapterId={params.chapterId} />
         </div>
       </div>
-    </div>
+    </>
   );
 }
 
 // Export the ChapterIdPage component as the default export.
 export default ChapterIdPage;
+
+//5 57

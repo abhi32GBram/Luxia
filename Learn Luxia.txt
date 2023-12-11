@@ -456,35 +456,18 @@ export async function PATH(
 }
 
 
+000000000000000000000000000000000000000000000000000000000000
 
-**Hindi**
+added the following in this push : 
 
-सर्दियों की शाम में जब आसमान होता है गुलाबी,
-तो ऐसा लगता है जैसे कोई छिड़क रहा हो जादू की लाली।
+1. routes and api's for being able to ; 
+    a. delete a chapter
+    b. publish the chapter
+    c. unpublish the chapter 
 
-सूरज ढलता है पश्चिम में,
-और आसमान बन जाता है रंगीन।
+2. added banners to the chapters sesction to see the status of publishing or being a free/preview chapter 
+3. added functionality to be able to reorder chapters 
+4. added a custome modal for when deleting a chapter 
 
-गुलाबी, नारंगी, और पीला,
-सब रंग मिलते हैं एक साथ,
-बनाते हैं एक सुंदर कलाकृति।
 
-सर्दियों की शाम का गुलाबी आसमान,
-है एक ऐसा नजारा,
-जो देखकर दिल हो जाता है खुश।
 
-**Urdu**
-
-جب سرمائی شام میں آسمان ہوتا ہے گلابی،
-تو ایسا لگتا ہے جیسے کوئی چھڑک رہا ہو جادو کی لالی۔
-
-سورج ڈھلتا ہے مغرب میں،
-اور آسمان بن جاتا ہے رنگین۔
-
-گلابی، نارنجی، اور پیلا،
-سب رنگ مل جاتے ہیں ایک ساتھ،
-ب بناتے ہیں ایک خوبصورت فن پارہ۔
-
-سرمائی شام کا گلابی آسمان،
-ہے ایک ایسا منظر،
-جسے دیکھ کر دل ہو جاتا ہے خوش۔

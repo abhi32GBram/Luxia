@@ -10,6 +10,104 @@ const { Video } = new Mux(
     process.env.MUX_TOKEN_SECRET!, // Mux API token secret
 );
 
+// Exporting an asynchronous function named DELETE
+// This function is a handler for an HTTP DELETE request
+export async function DELETE(
+    req: Request, // The HTTP request object
+    { params }: { params: { courseId: string; chapterId: string } } // Destructuring to extract 'params' from the second argument
+) {
+    try {
+        // Attempting to authenticate the user and get their userId
+        const { userId } = auth();
+
+        // If no userId is found, return a 401 Unauthorized response
+        if (!userId) {
+            return new NextResponse("Unauthorized", { status: 401 });
+        }
+
+        // Checking if the course belongs to the user
+        const ownCourse = await db.course.findUnique({
+            where: {
+                id: params.courseId, // Using courseId from the params to find the course
+                userId,             // Ensuring the course belongs to the authenticated user
+            }
+        });
+
+        // If the course doesn't belong to the user, return a 401 Unauthorized response
+        if (!ownCourse) {
+            return new NextResponse("Unauthorized", { status: 401 });
+        }
+
+        // Finding the specific chapter in the course
+        const chapter = await db.chapter.findUnique({
+            where: {
+                id: params.chapterId, // Using chapterId from the params to find the chapter
+                courseId: params.courseId, // Ensuring the chapter belongs to the correct course
+            }
+        });
+
+        // If the chapter is not found, return a 404 Not Found response
+        if (!chapter) {
+            return new NextResponse("Not Found", { status: 404 });
+        }
+
+        // If the chapter has an associated video, handle video deletion
+        if (chapter.videoUrl) {
+            // Finding Mux data related to the chapter
+            const existingMuxData = await db.muxData.findFirst({
+                where: {
+                    chapterId: params.chapterId,
+                }
+            });
+
+            // If Mux data is found, delete the associated video and Mux data
+            if (existingMuxData) {
+                await Video.Assets.del(existingMuxData.assetId); // Deleting the video asset
+                await db.muxData.delete({
+                    where: {
+                        id: existingMuxData.id,
+                    }
+                });
+            }
+        }
+
+        // Deleting the chapter from the database
+        const deletedChapter = await db.chapter.delete({
+            where: {
+                id: params.chapterId
+            }
+        });
+
+        // Checking if there are any published chapters left in the course
+        const publishedChaptersInCourse = await db.chapter.findMany({
+            where: {
+                courseId: params.courseId,
+                isPublished: true,
+            }
+        });
+
+        // If there are no published chapters left, update the course to be unpublished
+        if (!publishedChaptersInCourse.length) {
+            await db.course.update({
+                where: {
+                    id: params.courseId,
+                },
+                data: {
+                    isPublished: false,
+                }
+            });
+        }
+
+        // Returning the deleted chapter as a JSON response
+        return NextResponse.json(deletedChapter);
+    } catch (error) {
+        // Logging the error and returning a 500 Internal Error response if an exception occurs
+        console.log("[CHAPTER_ID_DELETE]", error);
+        return new NextResponse("Internal Error", { status: 500 });
+    }
+}
+
+
 // The PATCH function to update chapter information
 export async function PATCH(
     req: Request, // The request object
