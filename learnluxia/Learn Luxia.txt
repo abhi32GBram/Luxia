@@ -455,7 +455,7 @@ export async function PATH(
     }
 }
 
-
+ ## SOLVED ... WAS A MINOR SPELLING MISTAKE WITH UNPUBLISHED .. SHOULD'VE BEEN UNPUBLISH ... LOL 
 000000000000000000000000000000000000000000000000000000000000
 
 added the following in this push : 
@@ -469,5 +469,43 @@ added the following in this push :
 3. added functionality to be able to reorder chapters 
 4. added a custome modal for when deleting a chapter 
 
+000000000000000000000000000000000000000000000000000000000000
 
+
+Commit for 
+Publishing the Course :
+
+
+Features
+---Confetti Effect:
+    -- Upon completion of a course, confetti is displayed using the react-confetti package. 
+    -- This adds a fun and engaging element to the user experience.
+
+---Routes and Verification: 
+    -- Routes are set up for each course, and verification is implemented to control the publishing and unpublishing of courses.
+    -- This ensures that only authorized users can perform these actions.
+
+---Auto Unpublish:
+    -- If a chapter of a course is unpublished after the course has been published, the entire course is automatically unpublished.
+    -- This prevents incomplete or inconsistent course content from being accessible to users.
+
+---Course Deletion: 
+    -- Users have the ability to delete an entire course.
+    -- This is useful for removing outdated or irrelevant content.
+
+---Publishing Conditions:
+    -- A course can only be published if all mandatory fields are filled.
+    -- This ensures that no incomplete courses are made available to users.
+
+---Zustand Custom Hook:
+     -- The zustand package is used to create a custom hook for toggling the confetti effect upon publishing a course.
+     -- This allows for precise control over when the confetti effect is triggered.
+
+---Warning Banner:
+    -- A warning banner is displayed to inform the user about the current state of the course - whether it is published or unpublished.
+    -- This helps users understand the status of the course and take appropriate actions.
+
+---Mux Data Deletion:
+    -- After deleting a course, all associated Mux data is also deleted from the Mux repository.
+    -- This helps save storage space and keep the repository clean.
 
