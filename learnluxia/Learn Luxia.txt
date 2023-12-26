@@ -476,7 +476,8 @@ Commit for
 Publishing the Course :
 
 
-Features
+Added  : 
+
 ---Confetti Effect:
     -- Upon completion of a course, confetti is displayed using the react-confetti package. 
     -- This adds a fun and engaging element to the user experience.
@@ -509,3 +510,37 @@ Features
     -- After deleting a course, all associated Mux data is also deleted from the Mux repository.
     -- This helps save storage space and keep the repository clean.
 
+000000000000000000000000000000000000000000000000000000000000
+
+Commit for 
+Course Data Format Table :
+
+---Data Table in Instructor Dashboard:
+   -- A data table has been added in the instructor dashboard under the courses section. 
+   -- This table displays all the courses created by the currently logged-in user.
+
+---Sorting Feature:
+   -- The ability to sort data values based on alphabets and numbers has been added. 
+   -- Users can toggle between ascending and descending order to view the data in their preferred manner.
+
+---Course Status Column:
+   -- A status column has been added to the courses data table. 
+   -- This column shows whether a course is published or still in draft mode.
+
+---Price Column:
+   -- A price column has been added to the data table. 
+   -- Users can click on this column to sort the courses based on their prices in either ascending or descending order.
+
+---Actions Column:
+   -- An actions column has been added to the data table. 
+   -- This allows users to edit the course by clicking on it, which redirects them to the course page for making any necessary changes.
+
+---New Course Button:
+   -- A button has been added above the data table to create new courses. 
+   -- Clicking this button will take the user to a new page where they can input the details of the new course.
+
+---Search Box:
+   -- A search box has been added to the data table. 
+   -- Users can enter keywords to look up specific courses. The search functionality supports both alphabetic and numeric characters.
+
+   
