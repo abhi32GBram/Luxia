@@ -7,17 +7,17 @@ import React from 'react'
 // Import zod, a schema validation library, to define and enforce structure of data.
 import * as z from "zod"
 // Import zodResolver to integrate zod with react-hook-form.
-import {zodResolver} from "@hookform/resolvers/zod"
+import { zodResolver } from "@hookform/resolvers/zod"
 
 // Import useRouter from 'next/navigation', a mistake in the comment as it should be from 'next/router'.
-import { useRouter } from 'next/navigation' 
+import { useRouter } from 'next/navigation'
 // Import Link component from Next.js for client-side navigation.
 import Link from 'next/link'
 // Import toast for showing notifications.
 import toast from 'react-hot-toast'
 
 // Import useForm from 'react-hook-form' for handling form states and validation.
-import {useForm} from "react-hook-form"
+import { useForm } from "react-hook-form"
 // Import various form-related components for building the UI.
 import { Form, FormControl, FormDescription, FormLabel, FormField, FormMessage, FormItem } from '@/components/ui/form'
 // Import Button component for creating buttons.
@@ -31,7 +31,7 @@ import axios from "axios"
 // Define a schema for the form using zod.
 const formSchema = z.object({
     title: z.string().min(1, {
-        message:"Title is Required"
+        message: "Title is Required"
     }),
 })
 
@@ -76,28 +76,28 @@ const CreatePage = () => {
                 </p>
                 <Form {...form}>
                     <form onSubmit={form.handleSubmit(onSubmit)} className=' space-y-8 mt-8'>
-                        <FormField control={form.control} name='title' render={({field}) => (
+                        <FormField control={form.control} name='title' render={({ field }) => (
                             <FormItem>
                                 <FormLabel>
-                                    Course Title 
+                                    Course Title
                                 </FormLabel>
                                 <FormControl>
-                                    <Input  disabled={isSubmitting} placeholder="Eg.: 'Advanced Machine Learning Course'" {...field}/>
+                                    <Input disabled={isSubmitting} placeholder="Eg.: 'Advanced Machine Learning Course'" {...field} />
                                 </FormControl>
                                 <FormDescription>
                                     What will you teach in this course?
                                 </FormDescription>
-                                <FormMessage  />
+                                <FormMessage />
                             </FormItem>
-                        )}/>
+                        )} />
                         <div className='flex items-center gap-x-2'>
                             <Link href="/">
                                 <Button variant="ghost" type='button'>
-                                    Cancel 
+                                    Cancel
                                 </Button>
                             </Link>
                             <Button type='submit' disabled={!isValid || isSubmitting}>
-                                Continue 
+                                Continue
                             </Button>
                         </div>
                     </form>

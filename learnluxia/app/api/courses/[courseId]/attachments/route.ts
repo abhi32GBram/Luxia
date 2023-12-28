@@ -5,37 +5,37 @@ import { NextResponse } from "next/server"
 
 export async function POST(
     req: Request,
-    {params} : {params: {courseId : string }}
+    { params }: { params: { courseId: string } }
 ) {
     try {
-        const {userId} = auth()
-        const {url} = await req.json()
+        const { userId } = auth()
+        const { url } = await req.json()
 
-        if(!userId) {
-            return new NextResponse("Unauthorized Access",{status:401})
+        if (!userId) {
+            return new NextResponse("Unauthorized Access", { status: 401 })
         }
 
         const courseOwner = await db.course.findUnique({
             where: {
                 id: params.courseId,
-                userId : userId
+                userId: userId
             }
         })
-        if(!courseOwner){
-            return new NextResponse("Unauthorized Access",{status:401})
+        if (!courseOwner) {
+            return new NextResponse("Unauthorized Access", { status: 401 })
         }
 
         const attachment = await db.attachment.create({
-            data : {
+            data: {
                 url,
-                name : url.split("/").pop(),
-                courseId : params.courseId
+                name: url.split("/").pop(),
+                courseId: params.courseId
 
             }
         })
-        return  NextResponse.json(attachment)
+        return NextResponse.json(attachment)
     } catch (error) {
-        console.log("COURSE_ID_ATTACHMENT",error)
-        return new NextResponse("Internal Error Occured ",{status:500})
+        console.log("COURSE_ID_ATTACHMENT", error)
+        return new NextResponse("Internal Error Occured ", { status: 500 })
     }
 }

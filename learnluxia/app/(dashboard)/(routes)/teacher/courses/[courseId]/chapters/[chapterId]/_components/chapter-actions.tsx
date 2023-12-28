@@ -46,7 +46,7 @@ const ChapterActions = ({ disabled, courseId, chapterId, isPublished }: ChapterA
                 toast.success("Chapter is Published")
             }
             router.refresh()
-            
+
         } catch (error) {
             toast.error("Something Went Wrong !") // Toast in-case an operation fails
         } finally {

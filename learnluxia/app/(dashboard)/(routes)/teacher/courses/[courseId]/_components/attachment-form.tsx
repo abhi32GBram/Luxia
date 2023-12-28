@@ -67,7 +67,7 @@ const AttachmentForm = ({
             router.refresh()
         } catch (error) {
             toast.error("Something Went Wrong !! ")
-        }finally {
+        } finally {
             setdeletingId(null)
         }
     }
@@ -103,12 +103,12 @@ const AttachmentForm = ({
                                     <p className='text-xs line-clamp-1'>{attachment.name}</p>
                                     {deletingId === attachment.id && (
                                         <div>
-                                            <Loader2 className='h-4 w-4  animate-spin'/>
+                                            <Loader2 className='h-4 w-4  animate-spin' />
                                         </div>
                                     )}
                                     {deletingId !== attachment.id && (
-                                        <button className='ml-auto hover:opacity-75 transition' onClick={()=>onDelete(attachment.id)}>
-                                            <X className='h-4 w-4 '/>
+                                        <button className='ml-auto hover:opacity-75 transition' onClick={() => onDelete(attachment.id)}>
+                                            <X className='h-4 w-4 ' />
                                         </button>
                                     )}
                                 </div>

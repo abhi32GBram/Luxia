@@ -19,7 +19,7 @@ interface ActionsProps {
 
 const Actions = ({ disabled, courseId, isPublished }: ActionsProps) => {
 
-    const confetti  =  useConfettiStore()
+    const confetti = useConfettiStore()
 
 
     const router = useRouter()

@@ -5,33 +5,33 @@ import { db } from "@/lib/db"
 import { use } from "react"
 export async function DELETE(
     req: Request,
-    {params} : {params :{courseId: string ,attachmentId : string }}
+    { params }: { params: { courseId: string, attachmentId: string } }
 ) {
     try {
-        const {userId} = auth()
-        if(!userId){
-                return new NextResponse("Unauthorized Access ",{status:401})
+        const { userId } = auth()
+        if (!userId) {
+            return new NextResponse("Unauthorized Access ", { status: 401 })
         }
         const courseOwner = await db.course.findUnique({
-            where:{
-                id : params.courseId,
-                userId : userId
+            where: {
+                id: params.courseId,
+                userId: userId
             }
         })
 
-        if(!courseOwner){
-            return new NextResponse("Unauthorized Access ",{status:401})
+        if (!courseOwner) {
+            return new NextResponse("Unauthorized Access ", { status: 401 })
         }
 
         const attachment = await db.attachment.delete({
-            where:{
-                courseId  : params.courseId,
-                id : params.attachmentId 
+            where: {
+                courseId: params.courseId,
+                id: params.attachmentId
             }
         })
-        return  NextResponse.json(attachment)
+        return NextResponse.json(attachment)
     } catch (error) {
-        console.log("ATTACHMENT_ID",error) 
-        return new NextResponse("Internal Error Occured",{status:500})
+        console.log("ATTACHMENT_ID", error)
+        return new NextResponse("Internal Error Occured", { status: 500 })
     }
 }
