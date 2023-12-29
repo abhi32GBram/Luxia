@@ -580,6 +580,28 @@ Category-wise User Recommendation and Filtering :
   -- Mobile and large device responsiveness has been added to handle the homepage. This ensures that the website looks and functions optimally across different devices, providing a seamless user experience regardless of the device used.
 
   
-  000000000000000000000000000000000000000000000000000000000000
+000000000000000000000000000000000000000000000000000000000000
 
+Commit for 
+Search Page Results and Course Cards :
 
+---Server Action for Course Progress View:
+ -- A server action has been added to allow users to view the progress of their course. This feature provides users with real-time feedback on their learning journey.
+
+---Course Progress View (Bought Courses Only):
+ -- An ability has been added to view the progress of a course, but only if the course has been purchased. This ensures that users can only track their progress on courses they have invested in.
+
+---Search Page Completion:
+ -- The search page has been fully implemented. Users can now view search results based on their input in the search bar or the category they have selected. This feature enhances the user's ability to find relevant content quickly and efficiently.
+
+---Course Cards View:
+ -- The ability to view course cards has been added. This allows users to browse through available courses in a visually appealing and organized manner.
+
+---Published Courses View:
+ -- An ability has been added to view only the published courses by all the owners in the database. This ensures that users can only access and learn from courses that are ready for public consumption.
+
+---Course Details View:
+ -- The ability to view the course title, category, number of chapters, and price in the card has been added. This provides users with all the necessary information at a glance, enhancing their decision-making process.
+
+---Preview Features Update:
+ -- The `previewFeatures` array in the Prisma schema file has been updated to include `"fullTextSearch"` and `"fullTextIndex"`. This enables full text search capabilities, allowing users to perform comprehensive searches within the application.

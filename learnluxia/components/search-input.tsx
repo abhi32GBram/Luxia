@@ -1,3 +1,4 @@
+"use client"
 // Import necessary components and hooks
 import { Search } from "lucide-react" // Icon component
 import { Input } from "@/components/ui/input" // Input field component
@@ -43,7 +44,7 @@ export const SearchInput = () => {
         <div className="relative ">
             <Search className="h-4 w-4 absolute top-3 left-3 text-slate-600" />
             <Input value={value} onChange={(e) => setValue(e.target.value)} // Update the input value on change
-                className="w-full md:w-[300px] pl-9 rounded-full bg-slate-100 focus-visible:ring-slate-200" placeholder="Search for a Course" /> // Style the input field
+                className="w-full md:w-[300px] pl-9 rounded-full bg-slate-100 focus-visible:ring-slate-200" placeholder="Search for a Course" /> 
         </div>
     )
 }

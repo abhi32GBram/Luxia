@@ -7,7 +7,8 @@ datasource db {
 
 // Configure the generator for the Prisma client code.
 generator client {
-  provider = "prisma-client-js" // Generate a Prisma client for JavaScript
+  provider        = "prisma-client-js" // Generate a Prisma client for JavaScript
+  previewFeatures = ["fullTextSearch", "fullTextIndex"]
 }
 
 // Define the 'Course' model representing a course entity.
@@ -36,6 +37,7 @@ model Course {
   updatedAt DateTime @updatedAt // Timestamp for when the course was last updated
 
   @@index([categoryId]) // Index on the 'categoryId' field for optimization
+  @@fulltext([title])
 }
 
 // Define the 'Category' model representing a category entity.

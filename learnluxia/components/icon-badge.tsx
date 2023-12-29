@@ -8,7 +8,7 @@ const backgroundVariants = cva(
     {
         variants: {
             variant: {
-                default: "bg-sky-100",
+                default: "bg-purple-100",
                 success: "bg-emerald-100"
             },
             // iconVariant: {
@@ -32,7 +32,7 @@ const iconVariant = cva(
     {
         variants: {
             variant: {
-                default: "text-sky-700",
+                default: "text-purple-700",
                 success: " text-emerald-700"
             },
             size: {
@@ -62,10 +62,10 @@ export const IconBadge = ({
     variant,
     size
 }: IconBadgeProps) => {
-    return(
-    <div className={cn(backgroundVariants({ variant, size }))}>
-        <Icon className={cn(iconVariant({ variant, size }))} />
+    return (
+        <div className={cn(backgroundVariants({ variant, size }))}>
+            <Icon className={cn(iconVariant({ variant, size }))} />
 
-    </div>
-)
+        </div>
+    )
 }
