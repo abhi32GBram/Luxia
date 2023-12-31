@@ -141,6 +141,7 @@ model Purchase {
   createdAt DateTime @default(now()) // Timestamp for when the purchase was created
   updatedAt DateTime @updatedAt // Timestamp for when the purchase was last updated
 
+  @@unique([userId, courseId]) // Unique on the 'userId' & 'courseId' to prevent the same user purchasing the same course twice
   @@index([courseId]) // Index on the 'courseId' field for optimization
 }
 
