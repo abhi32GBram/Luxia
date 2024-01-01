@@ -4,6 +4,10 @@ import { auth } from '@clerk/nextjs';
 import { redirect } from 'next/navigation';
 
 import { VideoPlayer } from './_components/video-player';
+import { CourseEnrollButton } from './_components/course-enroll-button';
+import { Separator } from '@/components/ui/separator';
+import { Preview } from '@/components/preview';
+import { File } from 'lucide-react';
 
 // Defining the ChapterIdPage function which is an asynchronous function
 const ChapterIdPage = async ({
@@ -59,6 +63,40 @@ const ChapterIdPage = async ({
                         playbackId={muxData?.playbackId!}
                         isLocked={isLocked}
                         completeOnEnd={completeOnEnd} />
+                </div>
+                <div>
+                    <div className='p-4 flex flex-col md:flex-row items-center justify-between'>
+                        <h2 className='text-2xl font-semibold mb-2'>
+                            {chapter.title}
+                        </h2>
+                        {purchase ? (
+                            <div>
+                                {/* add the course progress button */}
+                            </div>
+                        ) : (
+                            <CourseEnrollButton courseId={params.courseId} price={course.price!} />
+                        )}
+                    </div>
+                    <Separator />
+                    <div>
+                        <Preview value={chapter.description!} />
+                    </div>
+                    {!!attachments.length && (
+                        <>
+                            <Separator />
+                            <div className='p-4'>
+                                {attachments.map((attachment) => (
+                                    <a href={attachment.url} key={attachment.id} target='_blank'
+                                        className='flex items-center p-3 w-full bg-purple-200 border text-purple-700 rounded-md hover:underline'>
+                                        <File />
+                                        <p className=' line-clamp-1'>
+                                            {attachment.name}
+                                        </p>
+                                    </a>
+                                ))}
+                            </div>
+                        </>
+                    )}
                 </div>
             </div>
         </div>
