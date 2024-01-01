@@ -53,7 +53,7 @@ export const CourseSidebar = async ({ course, progressCount }: CourseSidebarProp
                         id={chapter.id} // Pass the chapter ID
                         isCompleted={!!chapter.userProgress?.[0]?.isCompleted} // Check if the first user progress item exists and is completed
                         courseId={course.id} // Pass the course ID
-                        isLocked={chapter.isFree && !purchase} // Check if the chapter is free and not purchased
+                        isLocked={!chapter.isFree && !purchase} // Check if the chapter is free and not purchased
                     />
                 ))}
             </div>

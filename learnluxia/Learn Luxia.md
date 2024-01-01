@@ -1,4 +1,6 @@
-# Routes and APIs
+
+
+>  # Routes and APIs
 
 - New routes and APIs have been added to enable the following functionalities:
 - Delete a chapter
@@ -22,7 +24,7 @@
 
 ---
 
-# Publishing the Course
+> # Publishing the Course
 
 ## Confetti Effect
 
@@ -66,7 +68,7 @@
 
 ---
 
-# Course Data Format Table
+> # Course Data Format Table
 
 ## Data Table in Instructor Dashboard
 
@@ -105,7 +107,7 @@
 
 ---
 
-# Category-wise User Recommendation and Filtering
+> # Category-wise User Recommendation and Filtering
 
 ### Using the query-string package (npm i query-string)
 
@@ -143,7 +145,7 @@ Mobile and large device responsiveness has been added to handle the homepage. Th
 
 ---
 
-# Seach Page Results & Course Cards
+># Search Page Results & Course Cards
 
 ## Server Action for Course Progress View
 
@@ -158,7 +160,7 @@ An ability has been added to view the progress of a course, but only if the cour
 The search page has been fully implemented. Users can now view search results based on their input in the search bar or the category they have selected. This feature enhances the user's ability to find relevant content quickly and efficiently.
 
 ## Course Cards View
-
+7
 The ability to view course cards has been added. This allows users to browse through available courses in a visually appealing and organized manner.
 
 ## Published Courses View
@@ -173,15 +175,23 @@ The ability to view the course title, category, number of chapters, and price in
 
 The `previewFeatures` array in the Prisma schema file has been updated to include `"fullTextSearch"` and `"fullTextIndex"`. This enables full text search capabilities, allowing users to perform comprehensive searches within the application.
 
-# Course Page & Chapter Sidebar
+---
+
+># Course Page & Chapter Sidebar
 
 ## useRouter Hook:
 
-The `useRouter` hook is a powerful tool provided by Next.js for programmatically changing routes within client components. It allows developers to manipulate the route history, navigate between pages, and even redirect users based on certain conditions. However, it's important to note that the `<Link>` component is generally recommended for navigation purposes due to its simplicity and built-in features like prefetching. The `useRouter` hook should be used sparingly and only when there's a specific need that can't be met by the `<Link>` component.
+- The `useRouter` hook is a powerful tool provided by Next.js for programmatically changing routes within client components.
+- It allows developers to manipulate the route history, navigate between pages, and even redirect users based on certain conditions.
+- However, it's important to note that the `<Link>` component is generally recommended for navigation purposes due to its simplicity and built-in features like prefetching.
+- The `useRouter` hook should be used sparingly and only when there's a specific need that can't be met by the `<Link>` component.
 
 ## usePathname Hook:
 
-The `usePathname` hook is another handy utility provided by Next.js for client components. This hook allows you to access the current URL's pathname directly within your component. It returns a string representing the pathname of the current URL. This can be particularly useful when you need to perform some action based on the current page's pathname, such as conditionally rendering content or applying specific styles.
+- The `usePathname` hook is another handy utility provided by Next.js for client components.
+- This hook allows you to access the current URL's pathname directly within your component.
+- It returns a string representing the pathname of the current URL.
+- This can be particularly useful when you need to perform some action based on the current page's pathname, such as conditionally rendering content or applying specific styles.
 
 ## View Course Pages from Browse Page:
 
@@ -204,3 +214,29 @@ Conditional styling has been implemented in the chapters section. Depending on w
 The application has been made responsive for mobile devices. This means that the layout and design adapt to fit different screen sizes, ensuring a consistent and enjoyable user experience across all devices. The sheet component from Shadcn UI has been used to achieve this responsiveness.
 
 ---
+
+# Video Player & Course Sidebar
+
+## Conditional Rendering in Video Player:
+
+- We have added conditional rendering to the video player from Mux. This means that the video player will behave differently depending on whether the course has been purchased, if there is a free preview available, or if the video is still loading.
+- The conditional rendering logic checks the status of the course purchase and the availability of a free preview. Depending on these factors, the video player will either load the video, display a placeholder image, or show a loading spinner.
+- This feature enhances the user experience by providing immediate feedback and ensuring that the correct content is displayed at all times.
+
+## Loader for Video Player Component:
+
+- To improve the user experience, we have added a loader for the video player component. This means that while the video is being fetched from the server, a loading animation will be displayed to the user.
+- The loader provides visual feedback and lets the user know that the video is being loaded. Once the video is ready, the loader will disappear, and the video will start playing.
+- This feature helps to prevent confusion and frustration that could arise from a sudden change in content or lack of feedback during the video loading process.
+
+## Course Sidebar:
+
+- We have completed the course sidebar, which now includes conditional icons and background color for the chapters. The appearance of each chapter depends on whether it is selected, if it is for preview, or if the course has been purchased.
+- If a chapter is selected, it will have a play icon. If the course is not purchased, the chapter will be locked and a lock icon will be displayed. If the chapter is completed, it will have emerald/green text and background.
+- This feature improves the user interface by making it easier to understand the status of each chapter and navigate through the course.
+
+## Banner on Locked Chapters:
+
+- We have added a banner on the locked chapters to inform users that they need to purchase the course to access the videos. This banner appears when a user tries to access a chapter that is locked due to the course not being purchased.
+- The banner provides clear instructions and encourages users to take the necessary action to unlock the chapters. This feature helps to increase course sales and engagement.
+
