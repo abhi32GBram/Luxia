@@ -349,3 +349,25 @@ The application has been made responsive for mobile devices. This means that the
 - This helps users quickly identify where they left off and continue their learning journey.
 
 ---
+> # Student Dashboard Section 
+
+## Ability to View Purchased Courses in the Student Dashboard Section
+
+This feature allows students to easily access and manage their purchased courses directly from their dashboard. 
+
+- Students can view all the details of their purchased courses, including course name, description, progress, and other relevant information. 
+- This feature enhances the user experience by providing a centralized location for managing and tracking their learning progress.
+
+## Dynamic Labels/Boxes - In Progress and Completed
+
+Two dynamic boxes labeled "In Progress" and "Completed" have been added to the dashboard. 
+
+- Each box displays a counter that dynamically updates to reflect the number of courses that are currently in progress or have been completed by the student. 
+- This feature provides students with a quick overview of their learning progress and helps them plan their study schedule effectively.
+
+## Course Card with All Details
+
+Each course in the student's dashboard is represented by a course card that displays all the relevant details of the course. 
+
+- This includes the course name, description, progress, and other pertinent information. 
+- By clicking on the course card, students can directly navigate to the course page, providing a seamless and intuitive user experience.
