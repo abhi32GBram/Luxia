@@ -5,6 +5,7 @@ import { Chapter, Course, UserProgress } from "@prisma/client"; // Prisma client
 import { checkPrime } from "crypto"; // Cryptographic functions
 import { redirect } from "next/navigation"; // Navigation functions
 import { CourseSidebarItem } from "./course-sidebar-item"; // Sidebar item component
+import { CourseProgress } from "@/components/course-progress";
 
 // Interface for CourseSidebar props
 interface CourseSidebarProps {
@@ -41,9 +42,13 @@ export const CourseSidebar = async ({ course, progressCount }: CourseSidebarProp
         <div className="h-full border-r flex flex-col overflow-y-auto shadow-md">
             <div className=" p-8 flex flex-col border-b">
                 <h1 className=" font-semibold">
-                    {course.title} 
+                    {course.title}
                 </h1>
-                {/* Check if the course has been purchased and display the progress bar */}
+                {purchase && (
+                    <div className="mt-10">
+                        <CourseProgress variant="success" value={progressCount} />
+                    </div>
+                )}
             </div>
             <div className=" flex flex-col w-full">
                 {course.chapters.map((chapter) => ( // Map over the chapters in the course

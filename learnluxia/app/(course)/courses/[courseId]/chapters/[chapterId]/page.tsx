@@ -8,6 +8,7 @@ import { CourseEnrollButton } from './_components/course-enroll-button';
 import { Separator } from '@/components/ui/separator';
 import { Preview } from '@/components/preview';
 import { File } from 'lucide-react';
+import { CourseProgessButton } from './_components/course-progress-button';
 
 // Defining the ChapterIdPage function which is an asynchronous function
 const ChapterIdPage = async ({
@@ -71,7 +72,12 @@ const ChapterIdPage = async ({
                         </h2>
                         {purchase ? (
                             <div>
-                                {/* add the course progress button */}
+                                <CourseProgessButton
+                                    chapterId={params.chapterId}
+                                    courseId={params.courseId}
+                                    nextChapterId={nextChapter?.id}
+                                    isCompleted={!!userPogress?.isCompleted}
+                                />
                             </div>
                         ) : (
                             <CourseEnrollButton courseId={params.courseId} price={course.price!} />

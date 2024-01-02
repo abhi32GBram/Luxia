@@ -8,7 +8,7 @@ import axios from "axios"
 import { Loader2, Lock } from "lucide-react"
 import { useRouter } from "next/navigation"
 import { useState } from "react"
-import { Toaster } from "react-hot-toast"
+import toast, { Toaster } from "react-hot-toast"
 
 // Define the props for the VideoPlayer component
 interface VideoPlayerProps {
@@ -26,6 +26,30 @@ export const VideoPlayer = ({ chapterId, title, courseId, nextChapterId, playbac
 
     // State variable to track if the video player is ready
     const [isReady, setIsReady] = useState(false)
+
+    const router = useRouter()
+    const confetti = useConfettiStore()
+
+    const onEnd = async () => {
+        try {
+            if (completeOnEnd) {
+                await axios.put(`/api/courses/${courseId}/chapters/${chapterId}/progress`, { isCompleted: true })
+            }
+
+            if (!nextChapterId) {
+                confetti.onOpen()
+            }
+
+            toast.success("Progress Updated")
+            router.refresh()
+
+            if (nextChapterId) {
+                router.push(`/courses/${courseId}/chapters/${nextChapterId}`)
+            }
+        } catch {
+            toast.error("Something Went Wrong ")
+        }
+    }
 
     // Return the JSX for the VideoPlayer component
     return (
@@ -51,7 +75,7 @@ export const VideoPlayer = ({ chapterId, title, courseId, nextChapterId, playbac
                     !isReady && "hidden"
                 )}
                     onCanPlay={() => setIsReady(true)}
-                    onEnded={() => { }}
+                    onEnded={onEnd}
                     autoPlay
                     playbackId={playbackId} />
             )}

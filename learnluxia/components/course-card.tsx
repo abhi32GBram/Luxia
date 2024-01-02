@@ -4,6 +4,7 @@ import Link from 'next/link'; // Next.js Link component
 import { IconBadge } from '@/components/icon-badge'; // Custom IconBadge component
 import { BookOpen } from 'lucide-react'; // Lucide React icon
 import { PriceFormat } from "@/lib/format"; // Function to format prices
+import { CourseProgress } from './course-progress';
 
 // Define type for CourseCard props
 interface CourseCardProps {
@@ -40,9 +41,7 @@ export const CourseCard = ({ id, title, imageUrl, chaptersLength, price, progres
                         </div>
                     </div>
                     {progress !== null ? (
-                        <div>
-                            {/* MAKE A PROGRESS COMPONENT */}
-                        </div>
+                        <CourseProgress size="sm" value={progress} variant={progress === 100 ? "success" : "default"} />
                     ) : (
                         <p className='text-md md:text-sm font-medium text-slate-800'>
                             {PriceFormat(price)}

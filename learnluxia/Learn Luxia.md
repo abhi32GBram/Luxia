@@ -1,6 +1,4 @@
-
-
->  # Routes and APIs
+> # Routes and APIs
 
 - New routes and APIs have been added to enable the following functionalities:
 - Delete a chapter
@@ -145,7 +143,7 @@ Mobile and large device responsiveness has been added to handle the homepage. Th
 
 ---
 
-># Search Page Results & Course Cards
+> # Search Page Results & Course Cards
 
 ## Server Action for Course Progress View
 
@@ -160,7 +158,7 @@ An ability has been added to view the progress of a course, but only if the cour
 The search page has been fully implemented. Users can now view search results based on their input in the search bar or the category they have selected. This feature enhances the user's ability to find relevant content quickly and efficiently.
 
 ## Course Cards View
-7
+
 The ability to view course cards has been added. This allows users to browse through available courses in a visually appealing and organized manner.
 
 ## Published Courses View
@@ -177,7 +175,7 @@ The `previewFeatures` array in the Prisma schema file has been updated to includ
 
 ---
 
-># Course Page & Chapter Sidebar
+> # Course Page & Chapter Sidebar
 
 ## useRouter Hook:
 
@@ -215,7 +213,7 @@ The application has been made responsive for mobile devices. This means that the
 
 ---
 
-> #  Video Player & Course Sidebar
+> # Video Player & Course Sidebar
 
 ## Conditional Rendering in Video Player:
 
@@ -240,55 +238,114 @@ The application has been made responsive for mobile devices. This means that the
 - We have added a banner on the locked chapters to inform users that they need to purchase the course to access the videos. This banner appears when a user tries to access a chapter that is locked due to the course not being purchased.
 - The banner provides clear instructions and encourages users to take the necessary action to unlock the chapters. This feature helps to increase course sales and engagement.
 
---- 
+---
 
 > # Integration of Stripe
 
-* Stripe is a powerful payment gateway that allows businesses to accept online payments.
-*  It provides a suite of APIs that can be integrated into your application to handle various aspects of online transactions.
+- Stripe is a powerful payment gateway that allows businesses to accept online payments.
+- It provides a suite of APIs that can be integrated into your application to handle various aspects of online transactions.
 
 ## Added Stripe as the Payment Middleware
-* Stripe acts as the payment middleware in our application.
-* It handles all the complexities of processing payments, including security measures like encryption and fraud detection.
+
+- Stripe acts as the payment middleware in our application.
+- It handles all the complexities of processing payments, including security measures like encryption and fraud detection.
 
 ## Redirect to the Stripe Checkout for Secure Payments
-* When a user decides to make a payment, they are redirected to the Stripe Checkout page. 
-* This is a secure environment provided by Stripe where users can enter their payment details without worrying about the security of their data.
+
+- When a user decides to make a payment, they are redirected to the Stripe Checkout page.
+- This is a secure environment provided by Stripe where users can enter their payment details without worrying about the security of their data.
 
 ## Client and Server Failsafes and Error Management
-* The application includes robust error handling mechanisms to deal with any issues that may arise during the payment process.
-*  These include both client-side and server-side checks to ensure smooth operation.
+
+- The application includes robust error handling mechanisms to deal with any issues that may arise during the payment process.
+- These include both client-side and server-side checks to ensure smooth operation.
 
 ## Unlocking Chapters Upon Successful Transaction
-* Once a user successfully completes a payment, the corresponding course chapters are unlocked for them. 
-* This enhances the user experience by providing immediate access to the content they've paid for.
+
+- Once a user successfully completes a payment, the corresponding course chapters are unlocked for them.
+- This enhances the user experience by providing immediate access to the content they've paid for.
 
 ## Displaying Optional Files to the User Only Upon Purchase
-* The application ensures that optional files related to a course are only displayed to the user once they've completed the purchase.
-*  This adds value to the user's purchase and encourages repeat business.
+
+- The application ensures that optional files related to a course are only displayed to the user once they've completed the purchase.
+- This adds value to the user's purchase and encourages repeat business.
 
 ## Updating the Course Sidebar
-* After a successful purchase, the course sidebar is updated to reflect the changes.
-*  This includes unlocking the relevant chapters and showing the play button, indicating that the course is now available for the user.
+
+- After a successful purchase, the course sidebar is updated to reflect the changes.
+- This includes unlocking the relevant chapters and showing the play button, indicating that the course is now available for the user.
 
 ## Allowing Purchase of Only One Course
-* The application has a mechanism in place to prevent users from purchasing more than one course at a time. 
-* This is to ensure fair usage and prevent potential misuse of the system.
+
+- The application has a mechanism in place to prevent users from purchasing more than one course at a time.
+- This is to ensure fair usage and prevent potential misuse of the system.
 
 ## Viewing All Transactions in the Stripe CLI
-* The Stripe Command Line Interface (CLI) provides a convenient way to view all transactions.
-*  This is particularly useful for debugging and auditing purposes.
+
+- The Stripe Command Line Interface (CLI) provides a convenient way to view all transactions.
+- This is particularly useful for debugging and auditing purposes.
 
 ## Listening to the Webhook Request on Localhost Port Number - 3000
-* The application listens for incoming webhook events from Stripe on a specified port (in this case, port 3000).
-*  These events provide real-time updates on the status of transactions.
+
+- The application listens for incoming webhook events from Stripe on a specified port (in this case, port 3000).
+- These events provide real-time updates on the status of transactions.
 
 ## Updating Database Information After Transaction
-* After a transaction is completed, the application updates its database to reflect the new state.
-*  This includes recording the details of the transaction and updating the user's purchase history.
+
+- After a transaction is completed, the application updates its database to reflect the new state.
+- This includes recording the details of the transaction and updating the user's purchase history.
 
 ### Current Limitations (Stripe) :
 
 - Due to the Stripe policies in India for performing transactions during checkout :
-    * Payment currency in the backend has been set to USD for now as even after changing all the 
+  - Payment currency in the backend has been set to USD for now as even after changing the country to anything else it throws the payment-unacceptance error
+  - Courses will be listed in INR (dillema) and will be charged in USD in the checkout page
+
+---
+
+> # Course Completion & Progress Bar
+
+# Course Page Completion
+
+## Chapter Progress Bar
+
+- We have integrated a progress bar into our UI design using Shadcn UI.
+- This progress bar calculates the user's progress based on the number of videos they have watched within a course.
+- The progress bar displays the percentage of completion, providing users with a visual representation of their learning progress.
+
+## Course Card Progress Bar
+
+- In the browsing section, we replaced the price label on the course card with a progress bar.
+- This allows users to see at a glance how much of the course they have completed after purchasing the course
+
+## Mark as Complete Button
+
+- We've introduced a 'Mark as Complete' button that functions in two ways.
+- Firstly, it allows users to manually mark a chapter as complete. Secondly, once a user has watched all the videos in a chapter, the system automatically marks the chapter as complete.
+
+## Completion Confetti
+
+- Upon completing all the chapters in a course, users are rewarded with a fun confetti animation
+- This adds an element of excitement and celebration to the learning process.
+
+## Completed Chapter Indicators
+
+- Once a chapter is marked as complete, its icon and title turn green/emerald, and a circle check icon appears.
+- This provides a clear visual indication of which chapters the user has already completed.
+
+## State Solidification
+
+- To ensure that users don't lose their progress, we update the state of all completed chapters.
+- This means that if a user leaves a course and then returns to it later, they will find their progress preserved.
+
+## Automatic Chapter Transition
+
+- After watching all the videos in a chapter, users are automatically moved to the next chapter.
+- This streamlines the learning experience and reduces the need for manual navigation.
+
+## Current Chapter Banner
+
+- For returning viewers, we display a banner on the current chapter to indicate that it has been completed.
+- This helps users quickly identify where they left off and continue their learning journey.
+
 ---
