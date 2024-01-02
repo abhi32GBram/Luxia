@@ -371,3 +371,42 @@ Each course in the student's dashboard is represented by a course card that disp
 
 - This includes the course name, description, progress, and other pertinent information. 
 - By clicking on the course card, students can directly navigate to the course page, providing a seamless and intuitive user experience.
+
+--- 
+
+># Course Analytics Section
+
+### Recharts Library - `npm i recharts`
+
+- **Declarative Components**: Recharts uses declarative components for charts, aligning with React's composability and reusability.
+- **Customizability**: Offers a variety of charts with adjustable properties for fine-tuning chart appearance and behavior.
+- **Native SVG Charts**: Uses SVG elements for drawing charts, providing benefits in interactivity and scalability.
+- **Component Separation**: Components are clearly separated for greater flexibility and customization.
+- **Easy Installation**: Can be easily installed using npm, suitable for single-page applications.
+## Added the Analytics Page Accessible by the Trainer/Teacher
+* An analytics page has been added to the application, specifically designed for trainers or teachers.
+*  This page provides insights into the performance of their courses, such as the number of sales and the total revenue generated.
+
+## Added 2 Cards to Show Total Sales and Total Revenue
+* Two interactive cards have been added to the analytics page.
+*  These cards display the total number of courses sold and the total revenue earned from these sales.
+*  The data displayed on these cards is dynamically updated based on the latest sales data.
+
+## Added a Bar Graph Chart from the Recharts Library
+* A bar graph chart has been implemented using the Recharts library.
+ * This chart visually represents the distribution of sales across different courses.
+ *  Each bar on the chart corresponds to a course, with the length of the bar representing the total amount earned from that course.
+
+## X-Axis Has the Course Names
+* The x-axis of the bar graph chart displays the names of the courses. 
+
+* This allows trainers to quickly identify which courses are performing well in terms of sales and revenue generation.
+
+## Y-Axis the Range of Amount Earned Through the Courses
+* The y-axis of the bar graph chart represents the range of amounts earned through the courses. 
+* This gives trainers a clear understanding of the financial impact of their courses.
+
+## Database Retrieves and Calculates the Combined/Grouped Values for the Total Amount Earned and Courses Sold
+* The application interacts with the database to retrieve sales data for each course.
+*  This data is then processed and grouped to calculate the total amount earned and the number of courses sold.
+*  These calculations are used to populate the data displayed on the analytics page and the bar graph chart.
