@@ -215,7 +215,7 @@ The application has been made responsive for mobile devices. This means that the
 
 ---
 
-# Video Player & Course Sidebar
+> #  Video Player & Course Sidebar
 
 ## Conditional Rendering in Video Player:
 
@@ -240,3 +240,55 @@ The application has been made responsive for mobile devices. This means that the
 - We have added a banner on the locked chapters to inform users that they need to purchase the course to access the videos. This banner appears when a user tries to access a chapter that is locked due to the course not being purchased.
 - The banner provides clear instructions and encourages users to take the necessary action to unlock the chapters. This feature helps to increase course sales and engagement.
 
+--- 
+
+> # Integration of Stripe
+
+* Stripe is a powerful payment gateway that allows businesses to accept online payments.
+*  It provides a suite of APIs that can be integrated into your application to handle various aspects of online transactions.
+
+## Added Stripe as the Payment Middleware
+* Stripe acts as the payment middleware in our application.
+* It handles all the complexities of processing payments, including security measures like encryption and fraud detection.
+
+## Redirect to the Stripe Checkout for Secure Payments
+* When a user decides to make a payment, they are redirected to the Stripe Checkout page. 
+* This is a secure environment provided by Stripe where users can enter their payment details without worrying about the security of their data.
+
+## Client and Server Failsafes and Error Management
+* The application includes robust error handling mechanisms to deal with any issues that may arise during the payment process.
+*  These include both client-side and server-side checks to ensure smooth operation.
+
+## Unlocking Chapters Upon Successful Transaction
+* Once a user successfully completes a payment, the corresponding course chapters are unlocked for them. 
+* This enhances the user experience by providing immediate access to the content they've paid for.
+
+## Displaying Optional Files to the User Only Upon Purchase
+* The application ensures that optional files related to a course are only displayed to the user once they've completed the purchase.
+*  This adds value to the user's purchase and encourages repeat business.
+
+## Updating the Course Sidebar
+* After a successful purchase, the course sidebar is updated to reflect the changes.
+*  This includes unlocking the relevant chapters and showing the play button, indicating that the course is now available for the user.
+
+## Allowing Purchase of Only One Course
+* The application has a mechanism in place to prevent users from purchasing more than one course at a time. 
+* This is to ensure fair usage and prevent potential misuse of the system.
+
+## Viewing All Transactions in the Stripe CLI
+* The Stripe Command Line Interface (CLI) provides a convenient way to view all transactions.
+*  This is particularly useful for debugging and auditing purposes.
+
+## Listening to the Webhook Request on Localhost Port Number - 3000
+* The application listens for incoming webhook events from Stripe on a specified port (in this case, port 3000).
+*  These events provide real-time updates on the status of transactions.
+
+## Updating Database Information After Transaction
+* After a transaction is completed, the application updates its database to reflect the new state.
+*  This includes recording the details of the transaction and updating the user's purchase history.
+
+### Current Limitations (Stripe) :
+
+- Due to the Stripe policies in India for performing transactions during checkout :
+    * Payment currency in the backend has been set to USD for now as even after changing all the 
+---
