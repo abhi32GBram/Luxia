@@ -3,13 +3,17 @@
 import React from 'react'; // React library
 import { usePathname } from "next/navigation"; // Hook to get the current pathname
 import Link from 'next/link'; // Next.js link component
-import { UserButton } from '@clerk/nextjs'; // User button component from Clerk
+import { UserButton, auth, useAuth } from '@clerk/nextjs'; // User button component from Clerk
 import { Button } from '@/components/ui/button'; // Custom button component
 import { LogOut } from 'lucide-react'; // Logout icon
 import { SearchInput } from './search-input'; // Search input component
+import { isTeacher } from '@/lib/teacher';
+
 
 // NavbarRoutes component
 const NavbarRoutes = () => {
+
+    const { userId } = useAuth()
     // Get the current pathname
     const pathname = usePathname();
 
@@ -38,13 +42,13 @@ const NavbarRoutes = () => {
                             Exit
                         </Button>
                     </Link>
-                ) : ( // Otherwise, show the instructor mode button
+                ) : isTeacher(userId) ? ( // Otherwise, show the instructor mode button
                     <Link href='/teacher/courses'>
-                        <Button size="sm" variant="ghost">
+                        <Button size="sm" variant="outline">
                             Instructor Mode
                         </Button>
                     </Link>
-                )}
+                ) : null}
                 <UserButton afterSignOutUrl="/" />
             </div>
         </>

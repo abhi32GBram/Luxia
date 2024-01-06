@@ -349,32 +349,33 @@ The application has been made responsive for mobile devices. This means that the
 - This helps users quickly identify where they left off and continue their learning journey.
 
 ---
-> # Student Dashboard Section 
+
+> # Student Dashboard Section
 
 ## Ability to View Purchased Courses in the Student Dashboard Section
 
-This feature allows students to easily access and manage their purchased courses directly from their dashboard. 
+This feature allows students to easily access and manage their purchased courses directly from their dashboard.
 
-- Students can view all the details of their purchased courses, including course name, description, progress, and other relevant information. 
+- Students can view all the details of their purchased courses, including course name, description, progress, and other relevant information.
 - This feature enhances the user experience by providing a centralized location for managing and tracking their learning progress.
 
 ## Dynamic Labels/Boxes - In Progress and Completed
 
-Two dynamic boxes labeled "In Progress" and "Completed" have been added to the dashboard. 
+Two dynamic boxes labeled "In Progress" and "Completed" have been added to the dashboard.
 
-- Each box displays a counter that dynamically updates to reflect the number of courses that are currently in progress or have been completed by the student. 
+- Each box displays a counter that dynamically updates to reflect the number of courses that are currently in progress or have been completed by the student.
 - This feature provides students with a quick overview of their learning progress and helps them plan their study schedule effectively.
 
 ## Course Card with All Details
 
-Each course in the student's dashboard is represented by a course card that displays all the relevant details of the course. 
+Each course in the student's dashboard is represented by a course card that displays all the relevant details of the course.
 
-- This includes the course name, description, progress, and other pertinent information. 
+- This includes the course name, description, progress, and other pertinent information.
 - By clicking on the course card, students can directly navigate to the course page, providing a seamless and intuitive user experience.
 
---- 
+---
 
-># Course Analytics Section
+> # Course Analytics Section
 
 ### Recharts Library - `npm i recharts`
 
@@ -383,30 +384,82 @@ Each course in the student's dashboard is represented by a course card that disp
 - **Native SVG Charts**: Uses SVG elements for drawing charts, providing benefits in interactivity and scalability.
 - **Component Separation**: Components are clearly separated for greater flexibility and customization.
 - **Easy Installation**: Can be easily installed using npm, suitable for single-page applications.
+
 ## Added the Analytics Page Accessible by the Trainer/Teacher
-* An analytics page has been added to the application, specifically designed for trainers or teachers.
-*  This page provides insights into the performance of their courses, such as the number of sales and the total revenue generated.
+
+- An analytics page has been added to the application, specifically designed for trainers or teachers.
+- This page provides insights into the performance of their courses, such as the number of sales and the total revenue generated.
 
 ## Added 2 Cards to Show Total Sales and Total Revenue
-* Two interactive cards have been added to the analytics page.
-*  These cards display the total number of courses sold and the total revenue earned from these sales.
-*  The data displayed on these cards is dynamically updated based on the latest sales data.
+
+- Two interactive cards have been added to the analytics page.
+- These cards display the total number of courses sold and the total revenue earned from these sales.
+- The data displayed on these cards is dynamically updated based on the latest sales data.
 
 ## Added a Bar Graph Chart from the Recharts Library
-* A bar graph chart has been implemented using the Recharts library.
- * This chart visually represents the distribution of sales across different courses.
- *  Each bar on the chart corresponds to a course, with the length of the bar representing the total amount earned from that course.
+
+- A bar graph chart has been implemented using the Recharts library.
+- This chart visually represents the distribution of sales across different courses.
+- Each bar on the chart corresponds to a course, with the length of the bar representing the total amount earned from that course.
 
 ## X-Axis Has the Course Names
-* The x-axis of the bar graph chart displays the names of the courses. 
 
-* This allows trainers to quickly identify which courses are performing well in terms of sales and revenue generation.
+- The x-axis of the bar graph chart displays the names of the courses.
+
+- This allows trainers to quickly identify which courses are performing well in terms of sales and revenue generation.
 
 ## Y-Axis the Range of Amount Earned Through the Courses
-* The y-axis of the bar graph chart represents the range of amounts earned through the courses. 
-* This gives trainers a clear understanding of the financial impact of their courses.
+
+- The y-axis of the bar graph chart represents the range of amounts earned through the courses.
+- This gives trainers a clear understanding of the financial impact of their courses.
 
 ## Database Retrieves and Calculates the Combined/Grouped Values for the Total Amount Earned and Courses Sold
-* The application interacts with the database to retrieve sales data for each course.
-*  This data is then processed and grouped to calculate the total amount earned and the number of courses sold.
-*  These calculations are used to populate the data displayed on the analytics page and the bar graph chart.
+
+- The application interacts with the database to retrieve sales data for each course.
+- This data is then processed and grouped to calculate the total amount earned and the number of courses sold.
+- These calculations are used to populate the data displayed on the analytics page and the bar graph chart.
+
+---
+
+># Admin Protection (Frontend-Backend)
+
+## 1. Admin Protection for Course Creation
+
+- **Implementation Overview:**
+  - A new admin protection feature has been added, ensuring that only a specific user has the ability to create and post courses on the platform.
+  - This feature is crucial for maintaining content quality and preventing unauthorized course creation.
+
+## 2. Protection Using User ID from Clerk
+
+- **Detailing the Mechanism:**
+  - The protection mechanism utilizes the 'userId' obtained from Clerk, a secure identity management service. 
+  - This approach involves specifying a particular 'userId' in the environment file of the application. Only the user corresponding to this 'userId' is granted the privilege to create courses.
+- **Advantages:**
+  - By leveraging Clerk for user identification, the platform ensures robust security and authentication, minimizing the risk of unauthorized access.
+
+## 3. Frontend Protection
+
+- **Conditional Rendering of Instructor Mode Button:**
+  - On the frontend, the protection is enforced by conditionally rendering the 'Instructor Mode' button. 
+  - This button is made visible only next to the user profile of the authorized instructor.
+
+- **User Experience Impact:**
+  - This method not only secures the process but also enhances the user experience by keeping the interface clean and uncluttered for users who do not have course creation privileges.
+
+## 4. Backend Protection
+
+- **API Access Control:**
+  - On the backend, the protection is implemented by restricting API access.
+  -  This means that if an invalid user (i.e., a user not matching the designated 'userId') attempts to hit the API endpoint for creating a course, possibly through some form of injection or unauthorized access, the request is denied.
+- **Ensuring Data Integrity:**
+  - This layer of security is critical for maintaining the integrity of the platform, ensuring that courses can only be created through legitimate and authorized means.
+
+## 5. Route Access Protection
+
+- **Restricted Access to `/teacher/courses`:**
+  - The backend has also been fortified to prevent direct access to the `/teacher/courses` route. 
+  - This route is integral to accessing instructor mode.
+- **Redirection Mechanism:**
+  - If an unauthorized user attempts to access this route directly, they are not allowed to reach the instructor mode. Instead, the system redirects them to the homepage.
+- **Enhanced Security:**
+  - This measure further tightens the security of the platform, ensuring that the instructor mode is exclusively accessible to authorized personnel and preventing any backdoor entry into this privileged area.

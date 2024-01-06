@@ -1,3 +1,4 @@
+import { isTeacher } from "@/lib/teacher";
 import { auth } from "@clerk/nextjs";
 import { createUploadthing, type FileRouter } from "uploadthing/next";
 
@@ -6,8 +7,10 @@ const f = createUploadthing();
 // const auth = (req: Request) => ({ id: "fakeId" }); // Fake auth function
 
 const handleAuth = () => {
+
     const { userId } = auth()
-    if (!userId) throw new Error("Unauthorized Access !! ")
+    const isAuthorised = isTeacher(userId)
+    if (!userId || !isAuthorised) throw new Error("Unauthorized Access !! ")
     return { userId }
 }
 
