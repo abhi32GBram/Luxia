@@ -1,6 +1,6 @@
 import { db } from "@/lib/db"
 import { auth } from "@clerk/nextjs"
-import { count } from "console"
+
 import { NextResponse } from "next/server"
 
 export async function POST(

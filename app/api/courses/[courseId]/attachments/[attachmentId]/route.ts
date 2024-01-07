@@ -2,7 +2,7 @@ import { auth } from "@clerk/nextjs"
 import { NextResponse } from "next/server"
 
 import { db } from "@/lib/db"
-import { use } from "react"
+
 export async function DELETE(
     req: Request,
     { params }: { params: { courseId: string, attachmentId: string } }
