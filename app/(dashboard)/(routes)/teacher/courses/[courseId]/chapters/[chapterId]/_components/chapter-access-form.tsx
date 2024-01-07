@@ -105,7 +105,7 @@ const ChapterAccessForm = ({
                         </>
                     ) : (
                         <>
-                            This Chapter isn't Free
+                            This Chapter isn&apos;t Free
                         </>
                     )}
                 </p>

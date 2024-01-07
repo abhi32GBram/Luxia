@@ -3,25 +3,19 @@ import React from 'react'
 
 import * as z from "zod"
 
-
-
 import { useState } from 'react'
 import axios from 'axios'
 import { useRouter } from 'next/navigation'
 
 
-
-import { Input } from '@/components/ui/input'
 import { Button } from '@/components/ui/button'
 
-import { Divide, File, Ghost, ImageIcon, Loader2, Pencil, PlusCircle, X } from 'lucide-react'
+import { File, Ghost, ImageIcon, Loader2, Pencil, PlusCircle, X } from 'lucide-react'
 
 import toast from 'react-hot-toast'
 
-
-
 import { Attachment, Course } from '@prisma/client'
-import Image from 'next/image'
+
 
 import { FileUpload } from '@/components/file-upload'
 
@@ -83,7 +77,7 @@ const AttachmentForm = ({
                     {!isEditing && (
                         <>
                             <PlusCircle className='h-4 w-4 mr-2' />
-                            Add you're Files
+                            Add Your Files
                         </>
                     )}
                 </Button>
@@ -130,25 +124,6 @@ const AttachmentForm = ({
                     </div>
 
                 </div>
-                // THIS SECTION ISNT NEEDED FOR NOW 
-                // <Form {...form}>
-                //     <form onSubmit={form.handleSubmit(onSubmit)} className='space-y-4 mt-4'>
-                //         <FormField control={form.control} name='description' render={({field}) => (
-                //             <FormItem>
-                //                 <FormControl>
-                //                     <Textarea disabled={isSubmitting} placeholder="'Eg, : 'This Course will be About....'" {...field}/>
-
-                //                 </FormControl>
-                //                 <FormMessage />
-                //             </FormItem>
-                //         )} />
-                //         <div className='flex items-center gap-x-2'>
-                //             <Button disabled={!isValid || isSubmitting} type='submit'>
-                //                 Save 
-                //             </Button>
-                //         </div>
-                //     </form>
-                // </Form>
             )}
         </div>
     )
